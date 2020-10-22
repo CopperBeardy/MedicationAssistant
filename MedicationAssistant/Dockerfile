@@ -16,8 +16,6 @@ RUN dotnet build "MedicationAssistant.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "MedicationAssistant.csproj" -c Release -o /app/publish
 
-#COPY out /wwwroot/MedicationAssistant out /wwwroot/
-
 FROM base AS final
 EXPOSE 5000
 WORKDIR /app
