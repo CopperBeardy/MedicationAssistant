@@ -10,6 +10,7 @@ namespace MedicationAssistant.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         // will be provider from the Azure B2c service
         public string Id { get; set; }
-        public List<Medication> Medications { get; set; }
+        public ICollection<MedicationUse> Medications { get; set; }
+        public ICollection<Alert> Alerts { get; set; }
     }
 }

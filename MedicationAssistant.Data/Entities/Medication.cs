@@ -1,4 +1,4 @@
-﻿using MedicationAssistant.Data.Models;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,25 +10,15 @@ namespace MedicationAssistant.Data.Entities
     public class Medication
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [Required]
-        public Medicine Medicine { get; set; }
-
-        [Required]
-        public MedicineBrand MedicineBrand { get; set; }
-
-        [Required]
-        public MedicineUse MedicineUse { get; set; }
-
-
+        public Guid Id { get; set; }     
+        public Medicine Medicine { get; set; }      
+          
+        public MedicationUse MedicationUse { get; set; }
 
         [ForeignKey("Medicine")]
-        public int MedicineId { get; set; }
-        [ForeignKey("MedicineBrand")]
-        public int MedicineBrandId { get; set; }
-
+        public Guid MedicineId { get; set; }      
+    
         [ForeignKey("MedicineUse")]
-        public int MedicineUseId { get; set; }
+        public Guid MedicineUseId { get; set; }
     }
 }
