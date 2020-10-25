@@ -17,4 +17,9 @@
     <ProjectReference Include="..\MedicationAssistant.Shared\MedicationAssistant.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Components\" />
+  </ItemGroup>
+
 </Project>
