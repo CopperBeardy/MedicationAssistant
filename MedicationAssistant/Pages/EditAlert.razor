@@ -1,38 +1,185 @@
 ﻿@page "/editAlert/{AlertId:int}"
-
 @using Microsoft.EntityFrameworkCore;
+@implements IDisposable
 
+@inject IDbContextFactory<MedicationAssistantDBContext> DbFactory
+@inject NavigationManager Nav
+@inject IPageHelper PageHelper
+@inject EditSuccess EditSuccessState
 
-@if (vm.Alert == null && !vm.Busy)
+@if (AlertModel == null && !Busy)
 {
-<p>Could not find Alert with id @vm.AlertId</p>
+<p>Could not find AlertModel with id @AlertModelId</p>
  }
 else
 {
-    <AlertForm Busy="@vm.Busy"
-                Alert="@vm.Alert"
-                DbAlert="@vm.DbAlert"
+    <AlertForm Busy="@Busy"
+                Alert="@AlertModel"
+                DbAlert="@DbAlert"
                 IsAdd="false"
-                CancelRequest="vm.Cancel"
-                ValidationResult="@(async (success) => await vm.ValidationResultAsync(success))"/>
+                CancelRequest="Cancel"
+                ValidationResult="@(async (success) => await ValidationResultAsync(success))"/>
 
 }
-@if (vm.ConcurrencyError)
+@if (ConcurrencyError)
 {
 <br />
                 <div class="alert alert-danger">
                     <p>
-                        The Alert details have changed since it was last loaded. The updated fields are highlighted in the form.
+                        The AlertModel details have changed since it was last loaded. The updated fields are highlighted in the form.
                         Please choose an option:
                     </p>
                     <p><b>Cancel</b> to lose your changes and keep the database version.</p>
                     <p><b>Submit</b> to force an update with your version.</p>
                 </div>}
-@if (vm.Error)
+@if (Error)
 {
 <br />
-                <div class="alert alert-danger">Failed to update the Alert (@ErrorMessage).</div>}
+                <div class="alert alert-danger">Failed to update the AlertModel (@ErrorMessage).</div>}
 
-                @code{
-    EditAlertViewModel vm = new EditAlertViewModel();
-               }
+@code { /// <summary>
+    /// Id of AlertModel to edit
+    /// </summary>
+    [Parameter]
+    public int AlertModelId { get; set; }
+
+    /// <summary>
+    /// The <see cref="AlertModelAssistantDBContext"/> for database access.
+    /// </summary>
+    private MedicationAssistantDBContext Context { get; set; }
+
+    /// <summary>
+    /// AlertModel being edited
+    /// </summary>
+    private AlertModel AlertModel { get; set; }
+
+    /// <summary>
+    /// Database version when concurrency issues exist
+    /// </summary>
+    private AlertModel DbAlert { get; set; }
+
+    /// <summary>
+    /// Avoid concurrent requests
+    /// </summary>
+    private bool Busy;
+
+    /// <summary>
+    /// An error occurred in the update
+    /// </summary>
+    private bool Error;
+
+    /// <summary>
+    /// A concurrency error needs resolution
+    /// </summary>
+    private bool ConcurrencyError;
+
+    /// <summary>
+    /// Error message
+    /// </summary>
+    private string ErrorMessage = string.Empty;
+
+    /// <summary>
+    /// Start it up
+    /// </summary>
+    /// <returns>Task</returns>
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Busy = true;
+
+        try
+        {
+            Context = DbFactory.CreateDbContext();
+            AlertModel = await Context.Alert
+                .SingleOrDefaultAsync(c => c.Id == AlertModelId);
+        }
+        finally
+        {
+            Busy = false;
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+
+    /// <summary>
+    /// Result of form validation
+    /// </summary>
+    /// <param name="success">Success when model is valid</param>
+    /// <returns>Task</returns>
+    private async Task ValidationResultAsync(bool success)
+    {
+        if (Busy)
+        {
+            return;
+        }
+
+        if (!success)
+        {
+            // still need to edit model
+            Error = false;
+            ConcurrencyError = false;
+            return;
+        }
+
+        Busy = true; // async
+        try
+        {
+            await Context.SaveChangesAsync();
+            EditSuccessState.Success = true;
+            // go to view to see the record
+            Nav.NavigateTo($"/viewmed/{AlertModel.Id}");
+        }
+        catch (DbUpdateConcurrencyException dbex)
+        {
+            EditSuccessState.Success = false;
+
+            // concurrency issues!
+            ConcurrencyError = true;
+
+            // get values from database
+            var dbValues = dbex.Entries[0].GetDatabaseValues();
+
+            if (dbValues == null)
+            {
+                // deleted - show contact not found
+                Nav.NavigateTo($"/viewmed/{AlertModel.Id}");
+                return;
+            }
+
+            // bind to show labels on form
+            DbAlert = (AlertModel)dbValues.ToObject();
+
+            // move to original so second submit works (unless there is another concurrent edit)
+            dbex.Entries[0].OriginalValues.SetValues(dbValues);
+            Error = false;
+            Busy = false;
+        }
+        catch (Exception ex)
+        {
+            EditSuccessState.Success = false;
+            // unknown exception
+            Error = true;
+            ErrorMessage = ex.Message;
+            Busy = false;
+        }
+    }
+
+    /// <summary>
+    /// Bail out!
+    /// </summary>
+    private void Cancel()
+    {
+        Busy = true;
+        Nav.NavigateTo($"/{PageHelper.Page}");
+    }
+
+    /// <summary>
+    /// Implement <see cref="IDisposable"/>.
+    /// </summary>
+
+    public void Dispose()
+    {
+        Context.Dispose();
+    } }

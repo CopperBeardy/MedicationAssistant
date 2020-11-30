@@ -1,67 +1,90 @@
 ﻿@page "/addAlert"
 
+e "/addmed"
 
-@if (vm.Alert != null)
+@inject IDbContextFactory<MedicationAssistantDBContext> dbFactory
+@inject NavigationManager Nav
+@inject IPageHelper PageHelper
+
+@*create a form component for add and edit to share  *@
+@if (AlertModel != null)
 {
-<EditForm Model="@vm.Alert"
-          OnInvalidSubmit="(async () => await vm.HandleSubmitAsync(false))"
-          OnValidSubmit="(async () => await vm.HandleSubmitAsync(true))">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <h2>Alert</h2>
-    <p>
-
-        <label>
-            <h5><i class="fas fa-pills"></i> Alert Time </h5>
-            <InputDate @bind-Value="obj => obj?.vm.Alert.Time" />
-            <ConcurrencyField Model="@vm.Alert"
-                              DbModel="@vm.DbAlert"
-                              Property="obj => obj?.Time">
-            </ConcurrencyField>
-        </label>
-    </p>
-    <p>
-
-        <label>
-            <h5><i class="fas fa-prescription-bottle-alt"></i> Alert For  </h5>
-            <InputSelect @bind-Value="vm.Alert.Prescription.Medicine.Name" >
-                
-            </InputSelect>
-            <ConcurrencyField Model="@vm.Alert"
-                              DbModel="@vm.DbAlert"
-                              Property="obj => obj?.Prescription.Medicine.Name">
-            </ConcurrencyField>
-        </label>    
-    
-    </p>
-  
-
-
-    <br />
-    <button disabled="@vm.Busy" class="btn btn-warning"
-            @onclick="vm.CancelAsync">
-        Cancel
-    </button>&nbsp;
-    <button disabled="@vm.Busy" type="submit"
-            class="btn btn-primary">
-        Submit
-    </button>
-</EditForm>
-
-
+    <AlertForm Busy="@Busy"
+                  Alertl="@AlertModel"
+                  IsAdd="true"
+                  CancelRequest="Cancel"
+                  ValidationResult="@(async (success) => await ValidationResultAsync(success))" />
 }
-@if (vm.Success)
+@if (Success)
 {
     <br />
-    <div class="alert alert-success">The Alert was successfully added.</div>
+    <div class="alert alert-success">The AlertModel was successfully added.</div>
 }
-@if (vm.Error)
+@if (Error)
 {
     <br />
-    <div class="alert alert-danger">Failed to update the Alert (@vm.ErrorMessage).</div>
+    <div class="alert alert-danger">Failed to update the AlertModel (@ErrorMessage).</div>
 }
 
 
 @code {
-    public AddAlertViewModel vm = new AddAlertViewModel();
+    public bool Busy;
+    public bool Success;
+    public bool Error;
+    public string ErrorMessage = string.Empty;
+    private AlertModel AlertModel { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        
+
+
+        AlertModel = new AlertModel();
+
+
+        return base.OnInitializedAsync();
+    }
+
+    public async Task ValidationResultAsync(bool success)
+    {
+        if (Busy)
+        {
+            return;
+        }
+
+        if (!success)
+        {
+            Success = false;
+            Error = false;
+            return;
+        }
+        Busy = true;
+
+        using var context = dbFactory.CreateDbContext();
+        context.Set<AlertModel>().Add(AlertModel);
+
+        try
+        {
+            await context.SaveChangesAsync();
+            Success = true;
+            Error = false;
+            Busy = false;
+
+        }
+        catch (Exception ex)
+        {
+            Success = false;
+            Error = true;
+            ErrorMessage = ex.Message;
+            Busy = false;
+        }
+    }
+
+    /// <summary>
+    /// Back to list.
+    /// </summary>
+    private void Cancel()
+    {
+        Nav.NavigateTo($"/{PageHelper.Page}");
+    }
 }

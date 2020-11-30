@@ -1,10 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms;
-@typeparam TModel
+
 <h3>@Mode Alert</h3>
 
-@if(vm.Alert != null)
+@if(Alert != null)
 {
-<EditForm Model="@vm.Alert"
+<EditForm Model="@Alert"
           OnInvalidSubmit="(async () => await HandleSubmitAsync(false))"
           OnValidSubmit="(async () => await HandleSubmitAsync(true))">
     <DataAnnotationsValidator />
@@ -14,10 +14,10 @@
 
         <label>
             <h5><i class="fas fa-pills"></i> Alert Time </h5>
-            <InputDate @bind-Value="obj => obj?.vm.Alert.Time" />
-            <ConcurrencyField Model="@vm"
+            <InputDate @bind-Value="Alert.Time" />
+            <ConcurrencyField Model="@Alert"
                               DbModel="@DbAlert"
-                              Property="obj => obj?.Alert.Time">
+                              Property="obj => obj?.Time">
             </ConcurrencyField>
         </label>
     </p>
@@ -25,12 +25,12 @@
 
         <label>
             <h5><i class="fas fa-prescription-bottle-alt"></i> Alert For  </h5>
-            <InputSelect @bind-Value="obj => obj?.vm.Alert.Prescription.Medicine.Name" >
+            <InputSelect @bind-Value="Alert.Prescription.Medicine.Name" >
                 
             </InputSelect>
-            <ConcurrencyField Model="@vm"
+            <ConcurrencyField Model="@Alert"
                               DbModel="@DbAlert"
-                              Property="obj => obj?(x => x.vm.Alert.Prescription.Medicine.Name)">
+                              Property="obj => obj?.Prescription.Medicine.Name">
             </ConcurrencyField>
         </label>    
     
@@ -64,11 +64,11 @@
 
 
         [Parameter]
-        public TModel vm { get; set; }
+        public AlertModel Alert { get; set; }
 
 
         [Parameter]
-        public TModel DbAlert { get; set; }
+        public AlertModel DbAlert { get; set; }
 
         /// <summary>
         /// Prevent multiple asynchronous operations at the same time.
