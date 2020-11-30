@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace MedicationAssistant.Data.Entities
 {
     public class User
-    {
+    {  // will be provider from the Azure B2c service
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        // will be provider from the Azure B2c service
         public string Id { get; set; }
-        public ICollection<MedicationUse> Medications { get; set; }
-        public ICollection<Alert> Alerts { get; set; }
+
+        public virtual ICollection<Prescription> Medications { get; set; }
+
+        public virtual ICollection<Alert> Alerts { get; set; }
+
+        public User()
+        {
+            Medications = new List<Prescription>();
+            Alerts = new List<Alert>();
+        }
     }
 }

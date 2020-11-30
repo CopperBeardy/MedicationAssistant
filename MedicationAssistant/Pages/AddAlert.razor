@@ -1,0 +1,67 @@
+﻿@page "/addAlert"
+
+
+@if (vm.Alert != null)
+{
+<EditForm Model="@vm.Alert"
+          OnInvalidSubmit="(async () => await vm.HandleSubmitAsync(false))"
+          OnValidSubmit="(async () => await vm.HandleSubmitAsync(true))">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <h2>Alert</h2>
+    <p>
+
+        <label>
+            <h5><i class="fas fa-pills"></i> Alert Time </h5>
+            <InputDate @bind-Value="obj => obj?.vm.Alert.Time" />
+            <ConcurrencyField Model="@vm.Alert"
+                              DbModel="@vm.DbAlert"
+                              Property="obj => obj?.Time">
+            </ConcurrencyField>
+        </label>
+    </p>
+    <p>
+
+        <label>
+            <h5><i class="fas fa-prescription-bottle-alt"></i> Alert For  </h5>
+            <InputSelect @bind-Value="vm.Alert.Prescription.Medicine.Name" >
+                
+            </InputSelect>
+            <ConcurrencyField Model="@vm.Alert"
+                              DbModel="@vm.DbAlert"
+                              Property="obj => obj?.Prescription.Medicine.Name">
+            </ConcurrencyField>
+        </label>    
+    
+    </p>
+  
+
+
+    <br />
+    <button disabled="@vm.Busy" class="btn btn-warning"
+            @onclick="vm.CancelAsync">
+        Cancel
+    </button>&nbsp;
+    <button disabled="@vm.Busy" type="submit"
+            class="btn btn-primary">
+        Submit
+    </button>
+</EditForm>
+
+
+}
+@if (vm.Success)
+{
+    <br />
+    <div class="alert alert-success">The Alert was successfully added.</div>
+}
+@if (vm.Error)
+{
+    <br />
+    <div class="alert alert-danger">Failed to update the Alert (@vm.ErrorMessage).</div>
+}
+
+
+@code {
+    public AddAlertViewModel vm = new AddAlertViewModel();
+}

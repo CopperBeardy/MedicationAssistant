@@ -1,0 +1,179 @@
+﻿@page "/viewAlert/{AlertId:int}"
+
+@using Microsoft.EntityFrameworkCore
+
+@inject IDbContextFactory<MedicationAssistantDBContext> DbFactory
+@inject IPageHelper PageHelper
+@inject EditSuccess EditSuccessState
+
+@if (NotFound && !Loading)
+{
+<div class="alert alert-warning">The Alert with that id doesn't exist.</div> }
+else
+{
+@if (Alert == null || Loading)
+{
+<div class="alert alert-info">Loading...</div> }
+else
+{
+<h1>Alert</h1>
+   <br />
+   @if (EditSuccess)
+   {
+       <div class="alert alert-success">Successfully updated the Alert.</div>
+   }
+   @if (!Deleted)
+   {
+       <a class="btn btn-primary" href="edit/@Alert.Id" title="Edit">Edit</a><span>&nbsp;</span>
+        @if (!ShowConfirmation)
+        {
+            <button class="btn btn-danger" @onclick="@(() => { ShowConfirmation = true; EditSuccess = false; })">Delete</button>
+        }
+        else
+        {
+            <br />
+            <br />
+            <DeletePrompt Confirmation="@(async result => await ConfirmAsync(result))" />
+         } 
+   }
+   else
+   {
+       <div class="btn btn-danger">🚫 This item has been deleted.</div>
+   }
+}
+}
+
+@code { /// <summary>
+    /// Tracking of asynchronous calls.
+    /// </summary>
+    private bool Loading;
+
+    /// <summary>
+    /// Id from route of Alert.
+    /// </summary>
+    [Parameter]
+    public int AlertId { get; set; }
+
+    /// <summary>
+    /// Navigation check.
+    /// </summary>
+    private int _lastAlertId;
+
+    /// <summary>
+    /// True with redirect from successful edit.
+    /// </summary>
+    [Parameter]
+    public bool EditSuccess { get; set; }
+
+    /// <summary>
+    /// Alert entity.
+    /// </summary>
+    private AlertModel Alert { get; set; }
+
+    /// <summary>
+    /// Set to true when not found.
+    /// </summary>
+    private bool NotFound = false;
+
+    /// <summary>
+    /// Set to true when delete is requested.
+    /// </summary>
+    private bool ShowConfirmation = false;
+
+    /// <summary>
+    /// Set to true when delete is successful
+    /// </summary>
+    private bool Deleted = false;
+
+    /// <summary>
+    /// Navigated
+    /// </summary>
+    /// <returns>Task</returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_lastAlertId != AlertId)
+        {
+            EditSuccess = EditSuccessState.Success;
+            EditSuccessState.Success = false;
+            _lastAlertId = AlertId;
+            await LoadAlertAsync();
+        }
+        await base.OnParametersSetAsync();
+    }
+
+    /// <summary>
+    /// Confirm deletion
+    /// </summary>
+    /// <param name="result">True when user confirmed</param>
+    /// <returns>Task</returns>
+    private async Task ConfirmAsync(bool result)
+    {
+        if (result)
+        {
+            await DeleteAsync();
+        }
+        else
+        {
+            ShowConfirmation = false;
+            EditSuccess = false;
+        }
+    }
+
+    /// <summary>
+    /// Loads the Alert
+    /// </summary>
+    /// <returns>Task</returns>
+    private async Task LoadAlertAsync()
+    {
+        if (Loading)
+        {
+            return; //avoid concurrent requests
+        }
+
+        NotFound = false;
+        Alert = null;
+
+        Loading = true;
+
+        using var context = DbFactory.CreateDbContext();
+
+        Alert = await context.Alerts.AsNoTracking()
+            .SingleOrDefaultAsync(c => c.Id == AlertId);
+
+        if (Alert == null)
+        {
+            NotFound = true;
+        }
+
+        Loading = false;
+    }
+
+    /// <summary>
+    /// Deletes the Alert.
+    /// </summary>
+    /// <returns>Task</returns>
+    private async Task DeleteAsync()
+    {
+        if (Loading)
+        {
+            return; // avoid concurrent requests
+        }
+
+        Loading = true;
+        using var context = DbFactory.CreateDbContext();
+        var Alert = await context.Alerts
+        .SingleOrDefaultAsync(c => c.Id == AlertId);
+        if (Alert != null)
+        {
+            context.Alerts.Remove(Alert);
+            await context.SaveChangesAsync();
+            Loading = false;
+            Deleted = true;
+        }
+        else
+        {
+            Loading = false;
+            // show not found
+            await LoadAlertAsync();
+        }
+    } }

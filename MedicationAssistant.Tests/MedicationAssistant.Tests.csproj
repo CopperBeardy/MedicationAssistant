@@ -20,8 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MedicationAssistant.Data\MedicationAssistant.Data.csproj" />
-    <ProjectReference Include="..\MedicationAssistant.Shared\MedicationAssistant.Shared.csproj" />
     <ProjectReference Include="..\MedicationAssistant\MedicationAssistant.csproj" />
   </ItemGroup>
 

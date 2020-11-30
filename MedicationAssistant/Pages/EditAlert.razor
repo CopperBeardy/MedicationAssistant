@@ -1,0 +1,38 @@
+﻿@page "/editAlert/{AlertId:int}"
+
+@using Microsoft.EntityFrameworkCore;
+
+
+@if (vm.Alert == null && !vm.Busy)
+{
+<p>Could not find Alert with id @vm.AlertId</p>
+ }
+else
+{
+    <AlertForm Busy="@vm.Busy"
+                Alert="@vm.Alert"
+                DbAlert="@vm.DbAlert"
+                IsAdd="false"
+                CancelRequest="vm.Cancel"
+                ValidationResult="@(async (success) => await vm.ValidationResultAsync(success))"/>
+
+}
+@if (vm.ConcurrencyError)
+{
+<br />
+                <div class="alert alert-danger">
+                    <p>
+                        The Alert details have changed since it was last loaded. The updated fields are highlighted in the form.
+                        Please choose an option:
+                    </p>
+                    <p><b>Cancel</b> to lose your changes and keep the database version.</p>
+                    <p><b>Submit</b> to force an update with your version.</p>
+                </div>}
+@if (vm.Error)
+{
+<br />
+                <div class="alert alert-danger">Failed to update the Alert (@ErrorMessage).</div>}
+
+                @code{
+    EditAlertViewModel vm = new EditAlertViewModel();
+               }

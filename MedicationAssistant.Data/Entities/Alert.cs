@@ -1,22 +1,21 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace MedicationAssistant.Data.Entities
 {
-    public class Alert
+    public class Alert : EntityBase
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public DateTime Time { get; set; }
 
-        public MedicationUse Medication { get; set; }
+        public virtual Prescription Prescription { get; set; }
 
         [ForeignKey("User")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey("Medication")]
-        public Guid MedicaitonId { get; set; }
+        public int MedicaitonId { get; set; }
     }
 }

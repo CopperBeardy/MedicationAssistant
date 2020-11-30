@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30524.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant", "MedicationAssistant\MedicationAssistant.csproj", "{596718B1-B114-495E-9150-924E627844D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Data", "MedicationAssistant.Data\MedicationAssistant.Data.csproj", "{78F628E2-9C67-4AB7-9691-96E46B7832C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.Tests", "MedicationAssistant.Tests\MedicationAssistant.Tests.csproj", "{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Shared", "MedicationAssistant.Shared\MedicationAssistant.Shared.csproj", "{4A020461-B1F8-4990-AE2C-823A200FAE5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Data", "MedicationAssistant.Data\MedicationAssistant.Data.csproj", "{B82E17FA-47A4-4BE6-8B08-F17D19E0A731}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Tests", "MedicationAssistant.Tests\MedicationAssistant.Tests.csproj", "{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Shared", "MedicationAssistant.Shared\MedicationAssistant.Shared.csproj", "{194CF978-52E5-44EC-B457-791B9318B821}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +21,18 @@ Global
 		{596718B1-B114-495E-9150-924E627844D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{596718B1-B114-495E-9150-924E627844D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{596718B1-B114-495E-9150-924E627844D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78F628E2-9C67-4AB7-9691-96E46B7832C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78F628E2-9C67-4AB7-9691-96E46B7832C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78F628E2-9C67-4AB7-9691-96E46B7832C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78F628E2-9C67-4AB7-9691-96E46B7832C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A020461-B1F8-4990-AE2C-823A200FAE5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A020461-B1F8-4990-AE2C-823A200FAE5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A020461-B1F8-4990-AE2C-823A200FAE5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A020461-B1F8-4990-AE2C-823A200FAE5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82E17FA-47A4-4BE6-8B08-F17D19E0A731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82E17FA-47A4-4BE6-8B08-F17D19E0A731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82E17FA-47A4-4BE6-8B08-F17D19E0A731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82E17FA-47A4-4BE6-8B08-F17D19E0A731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{194CF978-52E5-44EC-B457-791B9318B821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{194CF978-52E5-44EC-B457-791B9318B821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{194CF978-52E5-44EC-B457-791B9318B821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{194CF978-52E5-44EC-B457-791B9318B821}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
