@@ -7,14 +7,14 @@
 @inject IPageHelper PageHelper
 @inject EditSuccess EditSuccessState
 
-@if (AlertModel == null && !Busy)
+@if (Alert == null && !Busy)
 {
-<p>Could not find AlertModel with id @AlertModelId</p>
+<p>Could not find Alert with id @AlertId</p>
  }
 else
 {
     <AlertForm Busy="@Busy"
-                Alert="@AlertModel"
+                Alert="@Alert"
                 DbAlert="@DbAlert"
                 IsAdd="false"
                 CancelRequest="Cancel"
@@ -26,7 +26,7 @@ else
 <br />
                 <div class="alert alert-danger">
                     <p>
-                        The AlertModel details have changed since it was last loaded. The updated fields are highlighted in the form.
+                        The Alert details have changed since it was last loaded. The updated fields are highlighted in the form.
                         Please choose an option:
                     </p>
                     <p><b>Cancel</b> to lose your changes and keep the database version.</p>
@@ -35,28 +35,28 @@ else
 @if (Error)
 {
 <br />
-                <div class="alert alert-danger">Failed to update the AlertModel (@ErrorMessage).</div>}
+                <div class="alert alert-danger">Failed to update the Alert (@ErrorMessage).</div>}
 
 @code { /// <summary>
-    /// Id of AlertModel to edit
+    /// Id of Alert to edit
     /// </summary>
     [Parameter]
-    public int AlertModelId { get; set; }
+    public int AlertId { get; set; }
 
     /// <summary>
-    /// The <see cref="AlertModelAssistantDBContext"/> for database access.
+    /// The <see cref="AlertAssistantDBContext"/> for database access.
     /// </summary>
     private MedicationAssistantDBContext Context { get; set; }
 
     /// <summary>
-    /// AlertModel being edited
+    /// Alert being edited
     /// </summary>
-    private AlertModel AlertModel { get; set; }
+    private Alert Alert { get; set; }
 
     /// <summary>
     /// Database version when concurrency issues exist
     /// </summary>
-    private AlertModel DbAlert { get; set; }
+    private Alert DbAlert { get; set; }
 
     /// <summary>
     /// Avoid concurrent requests
@@ -91,8 +91,8 @@ else
         try
         {
             Context = DbFactory.CreateDbContext();
-            AlertModel = await Context.Alert
-                .SingleOrDefaultAsync(c => c.Id == AlertModelId);
+            Alert = await Context.Alerts
+                .SingleOrDefaultAsync(c => c.Id == AlertId);
         }
         finally
         {
@@ -129,7 +129,7 @@ else
             await Context.SaveChangesAsync();
             EditSuccessState.Success = true;
             // go to view to see the record
-            Nav.NavigateTo($"/viewmed/{AlertModel.Id}");
+            Nav.NavigateTo($"/viewmed/{Alert.Id}");
         }
         catch (DbUpdateConcurrencyException dbex)
         {
@@ -144,12 +144,12 @@ else
             if (dbValues == null)
             {
                 // deleted - show contact not found
-                Nav.NavigateTo($"/viewmed/{AlertModel.Id}");
+                Nav.NavigateTo($"/viewmed/{Alert.Id}");
                 return;
             }
 
             // bind to show labels on form
-            DbAlert = (AlertModel)dbValues.ToObject();
+            DbAlert = (Alert)dbValues.ToObject();
 
             // move to original so second submit works (unless there is another concurrent edit)
             dbex.Entries[0].OriginalValues.SetValues(dbValues);

@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using MedicationAssistant.ViewModels;
+
 
 namespace MedicationAssistant
 {
@@ -35,7 +35,7 @@ namespace MedicationAssistant
             services.AddRazorPages();
             services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
-            services.AddScoped<IAddAlertViewModel, AddAlertViewModel>();
+     
             services.AddDbContextFactory<MedicationAssistantDBContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(Assembly.GetExecutingAssembly());

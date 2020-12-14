@@ -52,12 +52,12 @@ else
     /// <summary>
     /// Medicine being edited
     /// </summary>
-    private MedicineModel Medicine { get; set; }
+    private Medicine Medicine { get; set; }
 
     /// <summary>
     /// Database version when concurrency issues exist
     /// </summary>
-    private MedicineModel DbMedicine { get; set; }
+    private Medicine DbMedicine { get; set; }
 
     /// <summary>
     /// Avoid concurrent requests
@@ -150,7 +150,7 @@ else
             }
 
             // bind to show labels on form
-            DbMedicine = (MedicineModel)dbValues.ToObject();
+            DbMedicine = (Medicine)dbValues.ToObject();
 
             // move to original so second submit works (unless there is another concurrent edit)
             dbex.Entries[0].OriginalValues.SetValues(dbValues);

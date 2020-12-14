@@ -31,16 +31,16 @@ ValidationResult="@(async (success) => await ValidationResultAsync(success))" />
     public bool Success;
     public bool Error;
     public string ErrorMessage = string.Empty;
-    private PrescriptionModel Prescription { get; set; }
+    private Prescription Prescription { get; set; }
 
     protected override Task OnInitializedAsync()
     {
         using var context = dbFactory.CreateDbContext();
 
-        Prescription = new PrescriptionModel()
+        Prescription = new Prescription()
         {
-            User = new UserModel(),
-            Medicine = new MedicineModel()
+            User = new User(),
+            Medicine = new Medicine()
         };
 
         return base.OnInitializedAsync();

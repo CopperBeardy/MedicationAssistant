@@ -10,17 +10,12 @@
         Confirm
     </button>
 </div>
-@code { /// <summary>
-    /// Delegate confirmation to parent.
-    /// </summary>
+@code { 
+
     [Parameter]
     public EventCallback<bool> Confirmation { get; set; }
 
-    /// <summary>
-    /// Confirmation.
-    /// </summary>
-    /// <param name="confirmed"><c>True</c> when confirmed.</param>
-    /// <returns>A <see cref="Task"/>.</returns>
+
     private async Task ConfirmAsync(bool confirmed)
     {
         await Confirmation.InvokeAsync(confirmed);

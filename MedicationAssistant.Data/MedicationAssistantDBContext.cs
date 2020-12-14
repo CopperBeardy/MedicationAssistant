@@ -1,4 +1,4 @@
-﻿using MedicationAssistant.Data.Entities;
+﻿using MedicationAssistant.Shared.Models;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,7 @@ namespace MedicationAssistant.Data
       
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
-        public virtual DbSet<Entities.User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
 
         public override void Dispose()

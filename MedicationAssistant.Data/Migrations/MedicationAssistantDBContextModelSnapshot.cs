@@ -4,92 +4,20 @@ using MedicationAssistant.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace MedicationAssistant.Migrations
+namespace MedicationAssistant.Data.Migrations
 {
     [DbContext(typeof(MedicationAssistantDBContext))]
-    [Migration("20201122131024_initial")]
-    partial class initial
+    partial class MedicationAssistantDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
-
-            modelBuilder.Entity("MedicationAssistant.Data.Alert", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("MedicaitonId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PrescriptionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("TimeStamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PrescriptionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Alerts");
-                });
-
-            modelBuilder.Entity("MedicationAssistant.Data.Medicine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("Dosage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DosageUnit")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<byte[]>("TimeStamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("UseDirections")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Medicines");
-                });
 
             modelBuilder.Entity("MedicationAssistant.Data.Prescription", b =>
                 {
@@ -127,40 +55,100 @@ namespace MedicationAssistant.Migrations
                     b.ToTable("Prescriptions");
                 });
 
-            modelBuilder.Entity("MedicationAssistant.Data.User", b =>
+            modelBuilder.Entity("MedicationAssistant.Shared.Models.Alert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("MedicaitonId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PrescriptionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrescriptionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Alerts");
+                });
+
+            modelBuilder.Entity("MedicationAssistant.Shared.Models.Medicine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Dosage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DosageUnit")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("UseDirections")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Medicines");
+                });
+
+            modelBuilder.Entity("MedicationAssistant.Shared.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("TimeStamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MedicationAssistant.Data.Alert", b =>
-                {
-                    b.HasOne("MedicationAssistant.Data.Prescription", "Prescription")
-                        .WithMany()
-                        .HasForeignKey("PrescriptionId");
-
-                    b.HasOne("MedicationAssistant.Data.User", "User")
-                        .WithMany("Alerts")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Prescription");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("MedicationAssistant.Data.Prescription", b =>
                 {
-                    b.HasOne("MedicationAssistant.Data.Medicine", "Medicine")
+                    b.HasOne("MedicationAssistant.Shared.Models.Medicine", "Medicine")
                         .WithMany()
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MedicationAssistant.Data.User", "User")
+                    b.HasOne("MedicationAssistant.Shared.Models.User", "User")
                         .WithMany("Medications")
                         .HasForeignKey("UserId");
 
@@ -169,7 +157,22 @@ namespace MedicationAssistant.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MedicationAssistant.Data.User", b =>
+            modelBuilder.Entity("MedicationAssistant.Shared.Models.Alert", b =>
+                {
+                    b.HasOne("MedicationAssistant.Data.Prescription", "Prescription")
+                        .WithMany()
+                        .HasForeignKey("PrescriptionId");
+
+                    b.HasOne("MedicationAssistant.Shared.Models.User", "User")
+                        .WithMany("Alerts")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Prescription");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MedicationAssistant.Shared.Models.User", b =>
                 {
                     b.Navigation("Alerts");
 
