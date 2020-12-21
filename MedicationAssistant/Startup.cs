@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-
+using MedicationAssistant.Shared.Models;
 
 namespace MedicationAssistant
 {
@@ -41,6 +41,7 @@ namespace MedicationAssistant
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             // pager
             services.AddScoped<IPageHelper, PageHelper>();
+            services.AddScoped<IAlert, PrescriptionAlert>();
 
         }
 

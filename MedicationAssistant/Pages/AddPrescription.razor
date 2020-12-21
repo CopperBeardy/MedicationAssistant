@@ -37,11 +37,8 @@ ValidationResult="@(async (success) => await ValidationResultAsync(success))" />
     {
         using var context = dbFactory.CreateDbContext();
 
-        Prescription = new Prescription()
-        {
-            User = new User(),
-            Medicine = new Medicine()
-        };
+        Prescription = new Prescription();
+       
 
         return base.OnInitializedAsync();
     }

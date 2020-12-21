@@ -1,10 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms;
 
-<h3>@Mode Alert</h3>
+<h3>@Mode PrescriptionAlert</h3>
 
-@if(Alert != null)
+@if(PrescriptionAlert != null)
 {
-<EditForm Model="@Alert"
+<EditForm Model="@PrescriptionAlert"
           OnInvalidSubmit="(async () => await HandleSubmitAsync(false))"
           OnValidSubmit="(async () => await HandleSubmitAsync(true))">
     <DataAnnotationsValidator />
@@ -13,28 +13,18 @@
     <p>
 
         <label>
-            <h5><i class="fas fa-pills"></i> Alert Time </h5>
-            <InputDate @bind-Value="Alert.Time" />
-            <ConcurrencyField Model="@Alert"
-                              DbModel="@DbAlert"
-                              Property="obj => obj?.Time">
-            </ConcurrencyField>
-        </label>
-         <label>
-            <h5><i class="fas fa-pills"></i> Alert Time </h5>
-            <InputDate @bind-Value="Alert.Time" />
-            <ConcurrencyField Model="@Alert"
-                              DbModel="@DbAlert"
-                              Property="obj => obj?.Time">
+            <h5><i class="fas fa-pills"></i> Prescription Title </h5>
+            <InputDate @bind-Value="PrescriptionAlert.Title" />
+            <ConcurrencyField Model="@PrescriptionAlert"
+                              DbModel="@DbPrescriptionAlert"
+                              Property="obj => obj?.TimeStamp.ToString()">
             </ConcurrencyField>
         </label>
     </p>
-    <p>
 
-    
-    
+    <p>
+        <h5><i class="fas fa-clock"></i> Alert Time>
     </p>
-  
 
 
     <br />
@@ -63,11 +53,12 @@
 
 
         [Parameter]
-        public Alert Alert { get; set; }
+        public PrescriptionAlert PrescriptionAlert { get; set; }
 
+        public List<Prescription> Presciptions {get;set;}
 
         [Parameter]
-        public Alert DbAlert { get; set; }
+        public PrescriptionAlert DbPrescriptionAlert { get; set; }
 
         /// <summary>
         /// Prevent multiple asynchronous operations at the same time.

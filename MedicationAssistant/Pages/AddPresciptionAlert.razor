@@ -1,16 +1,14 @@
-﻿@page "/addAlert"
-
-
+﻿@page "/addPrescriptionAlert"
 
 @inject IDbContextFactory<MedicationAssistantDBContext> dbFactory
 @inject NavigationManager Nav
 @inject IPageHelper PageHelper
 
 @*create a form component for add and edit to share  *@
-@if (Alert != null)
+@if (PrescriptionAlert != null)
 {
-    <AlertForm Busy="@Busy"
-                  Alert="@Alert"
+    <PrescriptionAlertForm  Busy="@Busy"
+                  PrescriptionAlert="@PrescriptionAlert"
                   IsAdd="true"
                   CancelRequest="Cancel"
                   ValidationResult="@(async (success) => await ValidationResultAsync(success))" />
@@ -18,12 +16,12 @@
 @if (Success)
 {
     <br />
-    <div class="alert alert-success">The Alert was successfully added.</div>
+    <div class="Alert Alert-success">The PrescriptionAlert was successfully added.</div>
 }
 @if (Error)
 {
     <br />
-    <div class="alert alert-danger">Failed to update the Alert (@ErrorMessage).</div>
+    <div class="Alert Alert-danger">Failed to update the PrescriptionAlert (@ErrorMessage).</div>
 }
 
 
@@ -32,18 +30,10 @@
     public bool Success;
     public bool Error;
     public string ErrorMessage = string.Empty;
-    private Alert Alert { get; set; }
+    private PrescriptionAlert PrescriptionAlert { get; set; }
 
     protected override Task OnInitializedAsync()
     {
-        
-
-
-        Alert = new Alert();
-        Alert.Prescription = new Prescription();
-        Alert.Prescription.Medicine = new Medicine();
-        Alert.User = new User();
-
         return base.OnInitializedAsync();
     }
 
@@ -63,7 +53,7 @@
         Busy = true;
 
         using var context = dbFactory.CreateDbContext();
-        context.Set<Alert>().Add(Alert);
+        context.Set<PrescriptionAlert>().Add(PrescriptionAlert);
 
         try
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MedicationAssistant.Data;
+
 
 namespace MedicationAssistant.Shared.Models
 {
@@ -11,7 +11,7 @@ namespace MedicationAssistant.Shared.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Id { get; set; }
 
-        public virtual ICollection<Prescription> Medications { get; set; } = new List<Prescription>();
+        public virtual ICollection<PrescriptionItem> Prescriptions { get; set; } = new List<PrescriptionItem>();
 
         public virtual ICollection<Alert> Alerts { get; set; } = new List<Alert>();
 

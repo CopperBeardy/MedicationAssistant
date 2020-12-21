@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant", "Medi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.Tests", "MedicationAssistant.Tests\MedicationAssistant.Tests.csproj", "{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Data", "MedicationAssistant.Data\MedicationAssistant.Data.csproj", "{B82E17FA-47A4-4BE6-8B08-F17D19E0A731}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.Data", "MedicationAssistant.Data\MedicationAssistant.Data.csproj", "{B82E17FA-47A4-4BE6-8B08-F17D19E0A731}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Shared", "MedicationAssistant.Shared\MedicationAssistant.Shared.csproj", "{194CF978-52E5-44EC-B457-791B9318B821}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.Shared", "MedicationAssistant.Shared\MedicationAssistant.Shared.csproj", "{194CF978-52E5-44EC-B457-791B9318B821}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
