@@ -6,12 +6,12 @@ namespace MedicationAssistant.Shared.Models
 {
     public interface IAlert
     {
-        int Id { get; set; }       
-        
+        int Id { get; set; }
+        DateTime StartFrom { get; set; }
         DateTime Time { get; set; }
         byte[] TimeStamp { get; set; }
         string Title { get; }
         
-        List<PrescriptionItem> AlertItems { get; set; }
+        List<PrescriptionItem> AlertPrescriptionItems { get; set; }
     }
 }

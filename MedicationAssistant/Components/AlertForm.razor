@@ -13,11 +13,11 @@
     <p>
 
         <label>
-            <h5><i class="fas fa-pills"></i> Alert Time </h5>
-            <InputDate @bind-Value="Alert.Time" />
+            <h5><i class="fas fa-pills"></i> Alert Start From </h5>
+            <InputDate @bind-Value="Alert.StartFrom" />
             <ConcurrencyField Model="@Alert"
                               DbModel="@DbAlert"
-                              Property="obj => obj?.Time">
+                              Property="obj => obj?.StartFrom">
             </ConcurrencyField>
         </label>
          <label>
@@ -28,14 +28,9 @@
                               Property="obj => obj?.Time">
             </ConcurrencyField>
         </label>
-    </p>
-    <p>
 
-    
-    
+        @* Todo add a multi-select list for all items for a alert *@
     </p>
-  
-
 
     <br />
     <button disabled="@Busy" class="btn btn-warning"
@@ -63,11 +58,11 @@
 
 
         [Parameter]
-        public Alert Alert { get; set; }
+        public IAlert Alert { get; set; }
 
 
         [Parameter]
-        public Alert DbAlert { get; set; }
+        public IAlert DbAlert { get; set; }
 
         /// <summary>
         /// Prevent multiple asynchronous operations at the same time.
@@ -75,9 +70,6 @@
         [Parameter]
         public bool Busy { get; set; }
 
-  
-       
-     
         /// <summary>
         /// Mode.
         /// </summary>

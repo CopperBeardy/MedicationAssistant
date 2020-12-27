@@ -26,12 +26,42 @@
 
 
 @code {
-    public bool Busy;
-    public bool Success;
-    public bool Error;
-    public string ErrorMessage = string.Empty;
+    /// <summary>
+    /// PrescriptionAlert being added 
+    /// </summary>
     private PrescriptionAlert PrescriptionAlert { get; set; }
 
+
+     /// <summary>
+    /// Avoid concurrent requests
+    /// </summary>
+    private bool Busy;
+
+    /// <summary>
+    /// Notification form was successfully validated
+    /// </summary>
+    private bool Success;
+
+
+    /// <summary>
+    /// An error occurred in the update
+    /// </summary>
+    private bool Error;
+
+    /// <summary>
+    /// A concurrency error needs resolution
+    /// </summary>
+    private bool ConcurrencyError;
+
+    /// <summary>
+    /// Error message
+    /// </summary>
+    private string ErrorMessage = string.Empty;
+
+    /// <summary>
+    /// Start it up
+    /// </summary>
+    /// <returns>Task</returns>
     protected override Task OnInitializedAsync()
     {
         return base.OnInitializedAsync();
