@@ -1,5 +1,3 @@
-using AutoMapper;
-using System.Reflection;
 using MedicationAssistant.Data;
 using MedicationAssistant.Helpers;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -12,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using MedicationAssistant.Shared.Models;
+using MedicationAssistant.Services;
 
 namespace MedicationAssistant
 {
@@ -38,10 +37,13 @@ namespace MedicationAssistant
      
             services.AddDbContextFactory<MedicationAssistantDBContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+     
             // pager
             services.AddScoped<IPageHelper, PageHelper>();
-            services.AddScoped<IAlert, PrescriptionAlert>();
+            services.AddScoped<IAlert, PrescriptionItemAlert>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddHttpContextAccessor();
+         
 
         }
 

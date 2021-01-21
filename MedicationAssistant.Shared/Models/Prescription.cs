@@ -13,10 +13,10 @@ namespace MedicationAssistant.Shared.Models
         public int Id { get; set; }
 
         public User User { get; set; }
-
+        public DateTime CollectedOn { get; set; } = DateTime.Now;
         public List<PrescriptionItem> PrescriptionItems { get; set; }
 
         [ForeignKey("User")]
-        public string UserId { get; set; } = string.Empty;
+        public string UserId { get; set; } 
     }
 }

@@ -11,11 +11,11 @@ namespace MedicationAssistant.Shared.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Id { get; set; }
 
-        public virtual ICollection<PrescriptionItem> Prescriptions { get; set; } = new List<PrescriptionItem>();
+        public List<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 
-        public virtual ICollection<Alert> Alerts { get; set; } = new List<Alert>();
+        public List<PrescriptionItemAlert> Alerts { get; set; } = new List<PrescriptionItemAlert>();
 
-      
+           
         [Timestamp]
         public byte[] TimeStamp { get; set; }
     }

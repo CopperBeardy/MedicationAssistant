@@ -10,18 +10,18 @@ namespace MedicationAssistant.Shared.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int Quantity { get; set; } = 0;
+        public int Quantity { get; set; } 
       
         [Required]
-        public virtual Medicine Medicine { get; set; } = new Medicine();
+        public virtual Medicine Medicine { get; set; } 
 
         [Required]
-        public double FrequencyUnit { get; set; } = 0;
+        public double FrequencyUnit { get; set; } 
         [Required]
-        public Frequency Frequency { get; set; } = Frequency.Hourly;
+        public Frequency Frequency { get; set; } 
         
         [ForeignKey("Medicine")]
-        public int MedicineId { get; set; } = 0;
+        public int MedicineId { get; set; } 
 
         [Timestamp]
         public byte[] TimeStamp { get; set; }

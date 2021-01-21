@@ -12,6 +12,6 @@ namespace MedicationAssistant.Shared.Models
         byte[] TimeStamp { get; set; }
         string Title { get; }
         
-        List<PrescriptionItem> AlertPrescriptionItems { get; set; }
+        List<PrescriptionItem> PrescriptionItems { get; set; }
     }
 }

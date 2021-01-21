@@ -1,0 +1,27 @@
+﻿@page "/Dashboard"
+
+@inject  IDbContextFactory<MedicationAssistantDBContext> dbFactory;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Dashboard</h3>
+
+<div class="Row" >
+    <div>box for user details upper left side </div>
+   <PrescriptionsSmallComponent Prescriptions="@User.Prescriptions"/>
+
+</div>
+
+<div class="Row" >
+    <PrescriptionAlertSmallComponent PrescriptionItemAlerts="@User.Alerts" />
+    <PrescriptionItemsSmallComponent Prescriptions="@User.Prescriptions" /> 
+</div>
+
+@code {
+  [Parameter]
+  public User User { get; set; }
+  protected override void OnInitialized()
+  {
+        UserService us = new UserService(AuthenticationStateProvider, dbFactory);
+        User = us.GetUser();
+  }
+}

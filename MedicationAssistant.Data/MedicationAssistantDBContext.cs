@@ -15,17 +15,18 @@ namespace MedicationAssistant.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PrescriptionAlert>().Ignore(i => i.Title);
+          
             base.OnModelCreating(modelBuilder);
         }
 
 
    
       
-        public virtual DbSet<PrescriptionItem> Prescriptions { get; set; }
+        public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
+        public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<PrescriptionAlert> PrescriptionAlerts { get; set; }
+        public virtual DbSet<PrescriptionItemAlert> PrescriptionAlerts { get; set; }
 
 
         public override void Dispose()

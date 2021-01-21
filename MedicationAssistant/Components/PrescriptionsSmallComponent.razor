@@ -1,0 +1,19 @@
+﻿<h3>Latest Prescriptions</h3>
+
+<div>
+   <ol>
+       @foreach(var prescription in Prescriptions){
+           <li>
+               <label>Collected on : @prescription.CollectedOn</label>               
+               <label>with @prescription.PrescriptionItems.Count() items</label>
+           </li>
+       }
+   </ol>
+    <NavLink href="/Prescriptions" class="btn btn-success" >View All</NavLink>
+</div>
+
+
+@code {
+    [Parameter]
+    public List<Prescription> Prescriptions { get; set;}
+}
