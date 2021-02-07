@@ -1,26 +1,36 @@
 ﻿using MedicationAssistant.Shared.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace MedicationAssistant.Shared.Models
 {
 
     /// <summary>
-    /// this is the clas for connecting
-    /// all brand with a single medicaitons
+    /// this is the class for connecting
+    /// all brand with a single medications
     /// </summary>
-    public class Medicine
+    public class Medicine 
     {
-         public Guid Id { get; set; } 
-        public string  Name{ get; set; }
-        public int Dosage { get; set; }
-        public DosageUnit DosageUnit { get; set; }
-        public string Description { get; set; }
-        public string UseDirections { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "The Name of the medication needs to be between 5 - 100 characters", MinimumLength = 5)]
+        public string Name { get; set; }
 
-       
+        [Required]
+        public int Dosage { get; set; } = 0;
+
+        [Required]
+        public DosageUnit DosageUnit { get; set; } 
+
+        [Required]
+        [StringLength(500, ErrorMessage = "The Description of the medication needs to be between 25 - 500 characters", MinimumLength = 5)]
+        public string Description { get; set; } 
+
+        [StringLength(250, ErrorMessage = "The usage of the medication needs to be between 25 - 250 characters", MinimumLength = 5)]
+        public string UseDirections { get; set; } 
+
+        [Timestamp]
+        public byte[] TimeStamp { get; set; }
     }
 }

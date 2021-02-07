@@ -1,16 +1,22 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 
 namespace MedicationAssistant.Shared.Models
 {
     public class User
-    {
+    {  // will be provider from the Azure B2c service
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        // will be provider from the Azure B2c service
         public string Id { get; set; }
-        public ICollection<MedicationUse> Medications { get; set; }
-        public ICollection<Alert> Alerts { get; set; }
+
+        public List<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+
+        public List<PrescriptionItemAlert> Alerts { get; set; } = new List<PrescriptionItemAlert>();
+
+           
+        [Timestamp]
+        public byte[] TimeStamp { get; set; }
     }
 }
