@@ -7,7 +7,7 @@ namespace MedicationAssistant.Shared.Models
 
     /// <summary>
     /// this is the class for connecting
-    /// all brand with a single medicaitons
+    /// all brand with a single medications
     /// </summary>
     public class Medicine 
     {

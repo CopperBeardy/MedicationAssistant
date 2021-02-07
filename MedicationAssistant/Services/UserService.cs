@@ -14,8 +14,8 @@ namespace MedicationAssistant.Services
     {
         readonly AuthenticationStateProvider authenticationStateProvider;
         readonly IDbContextFactory<MedicationAssistantDBContext> dbFactory;
-        User user;
-        string userId = string.Empty;
+        public User user;
+        public string userId = string.Empty;
         public UserService(AuthenticationStateProvider authenticationStateProvider,
             IDbContextFactory<MedicationAssistantDBContext> dbFactory)
         {

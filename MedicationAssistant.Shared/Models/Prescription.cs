@@ -16,6 +16,8 @@ namespace MedicationAssistant.Shared.Models
         public DateTime CollectedOn { get; set; } = DateTime.Now;
         public List<PrescriptionItem> PrescriptionItems { get; set; }
 
+   
+
         [ForeignKey("User")]
         public string UserId { get; set; } 
     }

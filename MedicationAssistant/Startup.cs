@@ -42,6 +42,7 @@ namespace MedicationAssistant
             services.AddScoped<IPageHelper, PageHelper>();
             services.AddScoped<IAlert, PrescriptionItemAlert>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMedicineService, MedicineService>() ;
             services.AddHttpContextAccessor();
          
 
