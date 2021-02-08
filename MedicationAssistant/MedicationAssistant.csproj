@@ -8,6 +8,7 @@
 
   <ItemGroup>
    <PackageReference Include="DevExpress.Blazor" Version="20.2.5" />
+  
    <PackageReference Include="Microsoft.Identity.Web" Version="1.5.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.5.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />

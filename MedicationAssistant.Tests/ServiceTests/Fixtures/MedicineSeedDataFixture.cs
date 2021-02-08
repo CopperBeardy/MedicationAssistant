@@ -13,15 +13,17 @@ namespace MedicationAssistant.Tests.ServiceTests.Fixtures
     public class MedicineSeedDataFixture : IDisposable
     {
         public MedicationAssistantDBContext context { get; private set; } 
+        public DbContextOptions<MedicationAssistantDBContext> contextOptions { get; set;  }
+        public MedicationAssistantDBContext MakeContext() => new MedicationAssistantDBContext(contextOptions);
+
         public MedicineSeedDataFixture()
         {
 
-            var options = new DbContextOptionsBuilder<MedicationAssistantDBContext>()
-                     .UseInMemoryDatabase(databaseName: "MockDB")
-                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                     .Options;
+            contextOptions = new DbContextOptionsBuilder<MedicationAssistantDBContext>()
+                     .UseInMemoryDatabase(databaseName:  Guid.NewGuid().ToString())
+                    .Options;
 
-            context = new MedicationAssistantDBContext(options);
+            context = new MedicationAssistantDBContext(contextOptions);
 
             context.Medicines.Add( new Medicine()
             {
@@ -46,8 +48,9 @@ namespace MedicationAssistant.Tests.ServiceTests.Fixtures
 
         public void Dispose()
         {
-            context.Dispose();
-            
+            context.Database.EnsureDeleted();
+            context.Dispose();            
         }
+
     }
 }
