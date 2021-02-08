@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using MedicationAssistant.Data;
 using MedicationAssistant.Shared.Enums;
@@ -12,35 +11,33 @@ namespace MedicationAssistant.Services
 {
     public class MedicineService : IMedicineService
     {
-        readonly IDbContextFactory<MedicationAssistantDBContext> _dbContextFactory;
+         private List<Medicine> Medicines { get; set; }
 
-        private List<Medicine> Medicines { get; set; }
-
-
-
-        public MedicineService(IDbContextFactory<MedicationAssistantDBContext> dbContextFactory)
+        public async Task<IEnumerable<Medicine>> GetMedicines(MedicationAssistantDBContext context)
         {
-            _dbContextFactory = dbContextFactory;
-
-        }
-        public async Task<IEnumerable<Medicine>> GetMedicines()
-        {
-            using (var context = _dbContextFactory.CreateDbContext())
-            {
-                Medicines = await context.Medicines.ToListAsync();
+            try
+            { 
+                Medicines = await context.Medicines.ToListAsync();               
             }
-
-            if (Medicines.Count == 0 || Medicines == null)
+            catch (Exception ex)
             {
-                Medicines = new List<Medicine>();
+
+                throw new Exception("could not retrieve Medicines ",ex);
             }
+            finally
+            {
+                context.Dispose();
+            }              
+                
+
+           
             return Medicines;
         }
 
-        public async Task<bool> RemoveMedicine(Medicine medicine)
+        public async Task<bool> RemoveMedicine(MedicationAssistantDBContext context,Medicine medicine)
         {
             bool success = false;
-            MedicationAssistantDBContext context = _dbContextFactory.CreateDbContext();
+            
                 try
                 {
               
@@ -67,10 +64,9 @@ namespace MedicationAssistant.Services
             return success;
         }
 
-        public async Task UpdateMedicine(Medicine medicine, Dictionary<string, object> newValues)
+        public async Task UpdateMedicine(MedicationAssistantDBContext context,Medicine medicine, Dictionary<string, object> newValues)
         {
-            using (var context = _dbContextFactory.CreateDbContext())
-            {
+           
                 try
                 {
                     if (await context.Medicines.AnyAsync(x => x.Id == medicine.Id))
@@ -85,25 +81,33 @@ namespace MedicationAssistant.Services
                 {
                     throw new Exception("Error while trying to update Medicine object", ex);
                 }
-
+            finally
+            {
+                context.Dispose();
             }
+
+          
         }
 
-        public async Task InsertMedicine(Medicine medicine, Dictionary<string, object> values)
+        public async Task InsertMedicine(MedicationAssistantDBContext context,Medicine medicine, Dictionary<string, object> values)
         {
-            using (var context = _dbContextFactory.CreateDbContext())
-            {
+           
                 try
                 {
-                    context.Medicines.Add(SetValues(medicine, values));
+                    context.Medicines.Add(SetValues(medicine, values)); 
+                await context.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {
                     throw new Exception("Error while trying to Inserting Medicine object", ex);
-                }
-                await context.SaveChangesAsync();
+                  }
+                   finally
+                    {
+                context.Dispose();
+                    }
+              
 
-            }
+            
         }
 
 
