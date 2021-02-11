@@ -11,6 +11,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using MedicationAssistant.Shared.Models;
 using MedicationAssistant.Services;
+using MedicationAssistant.ConfigureServiceExtensions;
 
 namespace MedicationAssistant
 {
@@ -24,25 +25,16 @@ namespace MedicationAssistant
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAdB2C"));
-            services.AddControllersWithViews()
-                .AddMicrosoftIdentityUI();
 
-            services.AddAuthorization();
-       
+            AuthExtensions.AddConfig(services, Configuration);
             services.AddRazorPages();
             services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
      
             services.AddDbContextFactory<MedicationAssistantDBContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-     
-            // pager
-            services.AddScoped<IPageHelper, PageHelper>();
-            services.AddScoped<IAlert, PrescriptionItemAlert>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IMedicineService, MedicineService>() ;
+
+            ServiceExtensions.AddConfig(services, Configuration);
             services.AddHttpContextAccessor();
          
 

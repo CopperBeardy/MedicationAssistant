@@ -1,13 +1,6 @@
 ﻿@page "/prescriptions"
 
-@inject  IDbContextFactory<MedicationAssistantDBContext> dbFactory;
-@inject AuthenticationStateProvider AuthenticationStateProvider
-
 <h3>Prescriptions </h3>
-
-
-
-
 <DxDataGrid Data="@Prescriptions"
             RowRemoving="@((dataItem) => OnRowRemoving(dataItem))"
             RowUpdating="@((updatingDataItem, newValues) => OnRowUpdating(updatingDataItem, newValues))"
@@ -16,94 +9,22 @@
 
     <DxDataGridCommandColumn Width="150px"></DxDataGridCommandColumn>
        <DxDataGridColumn Field="@nameof(selectedPrescription.CollectedOn)"  Caption="Prescription Date">
-         
             <EditTemplate>
                 <DxCalendar 
                 @bind-SelectedDate="@selectedPrescription.CollectedOn" 
                 VisibleDate ="@selectedPrescription.CollectedOn"/>
-        
-   @*             <DxListBox Data="@Items" @bind-Values="@selectedPrescription.PrescriptionItems"></DxListBox>
-
-   *@  
         <DxListBox  
         Data="@Medicines"
         @bind-Values="@Values"
-        TextFieldName="@nameof(Medicine.Name)"
-       >
-    
+        TextFieldName="@nameof(Medicine.Name)">    
 </DxListBox>
-
-
 </EditTemplate>
        </DxDataGridColumn>
-   
-   
-
     <DxDataGridColumn EditorVisible="false" Field="@nameof(selectedPrescription.PrescriptionItems)" Caption="Item Count" Width="150px">
         <DisplayTemplate>
             @{
                 @selectedPrescription.PrescriptionItems.Count(); 
             }
         </DisplayTemplate>        
-    </DxDataGridColumn>   
-
+    </DxDataGridColumn>  
 </DxDataGrid>
-
-
-@code {
-    public List<Prescription> Prescriptions;
-
-    public User User;
-
-    public IEnumerable<Medicine> Medicines;
-    
-IEnumerable<Medicine> Values { get; set; }
-
-
-    Prescription selectedPrescription;
-    public Prescription SelectedPrescription
-    {
-    get { return selectedPrescription; }
-    set{
-         selectedPrescription = value;
-            InvokeAsync(StateHasChanged);
-    }
-    }
-    protected override async Task OnInitializedAsync() {
-       
-
-        UserService us = new UserService(AuthenticationStateProvider, dbFactory);
-        User = us.GetUser();
-
-        using (var context = dbFactory.CreateDbContext()){
-
-            Prescriptions = context.Prescriptions.Where(x => x.UserId.Equals(us.userId))
-                            .Include(items => items.PrescriptionItems)
-                            .ThenInclude(m => m.Medicine )
-                            .ToList();
-
-            Medicines = context.Medicines.ToList(); 
-
-
-        }
-
-        if(!Prescriptions.Count.Equals(0))
-        {
-            SelectedPrescription = Prescriptions.First();
-        }
-
-       
-    }
-    //todo get all prescriptions for the current user from database
-    public void OnRowRemoving(Prescription prescription){
-        
-    }
-
-    public void OnRowUpdating(Prescription prescription, Dictionary<string,object> newValues)
-    {
-    }
-
-    public void OnRowInserting(Dictionary<string,object> values){
-        
-    }
-}
