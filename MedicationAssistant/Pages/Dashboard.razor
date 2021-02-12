@@ -1,33 +1,26 @@
 ﻿@page "/Dashboard"
 
-@inject  IDbContextFactory<MedicationAssistantDBContext> dbFactory;
+@inject IDbContextFactory<MedicationAssistantDBContext> dbFactory;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 <div class="parent">
        <h1 class="title">Dashboard</h1>
       <div class="top-left">box for user details upper left side </div>
-      <div class="top-right">
-     <PrescriptionsSmallComponent  Prescriptions="@User.Prescriptions"/>
-      </div>
     
-
-  
         <div class="bottom-left">
-    <PrescriptionAlertSmallComponent  PrescriptionItemAlerts="@User.Alerts" />
+            <PrescriptionsSmallComponent Prescriptions="@User.Prescriptions" />
    </div>
-   <div class="bottom-right">
-    <PrescriptionItemsSmallComponent  Prescriptions="@User.Prescriptions" /> 
-    </div>
-  
+        <div class="bottom-right">
+            <PrescriptionAlertSmallComponent PrescriptionItemAlerts="@User.Alerts" />
+        </div>
 </div>
-
 
 @code {
     [Parameter]
     public User User { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         using (var cont = dbFactory.CreateDbContext()){
             User = UserService.GetUser(cont,AuthenticationStateProvider);
@@ -36,47 +29,12 @@
             {
                 cont.Users.Add(new User() { Id = User.Id });
                 cont.SaveChanges();
-
             }
             else
             {
-                GetAlerts(cont);
-                GetPrescriptions(cont);
+                User.Alerts = await new AlertService().GetPrescriptionItemAlerts(cont, User.Id);              
+                User.Prescriptions = await new PrescriptionService().GetRequiredAmountFullPrescriptions(cont,User.Id);
             }
         }
     }
-
-
-
-    private void GetAlerts(MedicationAssistantDBContext cont)
-    {
-        User.Alerts = cont.PrescriptionAlerts
-                .Where(alert => alert.UserId.Equals(User.Id))
-                .OrderByDescending(time => time.Time)
-                .Take(5)
-                .ToList();
-        if (User.Alerts == null)
-        {
-            User.Alerts = new List<PrescriptionItemAlert>();
-        }
-
-    }
-
-    private void GetPrescriptions(MedicationAssistantDBContext cont)
-    {
-        User.Prescriptions = cont.Prescriptions
-                .Where(prescription => prescription.UserId.Equals(User.Id))
-                .OrderByDescending(time => time.CollectedOn)
-                .Take(5)
-                .Include(items => items.PrescriptionItems)
-                .ThenInclude(m => m.Medicine)
-                .ToList();
-
-        if (User.Prescriptions == null)
-        {
-            User.Prescriptions = new List<Prescription>();
-        }
-
-    }
 }
-
