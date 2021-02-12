@@ -23,19 +23,60 @@
 </div>
 
 
-
-
-
 @code {
     [Parameter]
-  public User User { get; set; }
-  
+    public User User { get; set; }
+
+    protected override void OnInitialized()
+    {
+        using (var cont = dbFactory.CreateDbContext()){
+            User = UserService.GetUser(cont,AuthenticationStateProvider);
+
+            if (User == null)
+            {
+                cont.Users.Add(new User() { Id = User.Id });
+                cont.SaveChanges();
+
+            }
+            else
+            {
+                GetAlerts(cont);
+                GetPrescriptions(cont);
+            }
+        }
+    }
 
 
-  protected override void OnInitialized()
-  {
-        UserService us = new UserService(AuthenticationStateProvider, dbFactory);
-        User = us.GetUser();
-        
-  }
+
+    private void GetAlerts(MedicationAssistantDBContext cont)
+    {
+        User.Alerts = cont.PrescriptionAlerts
+                .Where(alert => alert.UserId.Equals(User.Id))
+                .OrderByDescending(time => time.Time)
+                .Take(5)
+                .ToList();
+        if (User.Alerts == null)
+        {
+            User.Alerts = new List<PrescriptionItemAlert>();
+        }
+
+    }
+
+    private void GetPrescriptions(MedicationAssistantDBContext cont)
+    {
+        User.Prescriptions = cont.Prescriptions
+                .Where(prescription => prescription.UserId.Equals(User.Id))
+                .OrderByDescending(time => time.CollectedOn)
+                .Take(5)
+                .Include(items => items.PrescriptionItems)
+                .ThenInclude(m => m.Medicine)
+                .ToList();
+
+        if (User.Prescriptions == null)
+        {
+            User.Prescriptions = new List<Prescription>();
+        }
+
+    }
 }
+

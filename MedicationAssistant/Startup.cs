@@ -1,5 +1,4 @@
 using MedicationAssistant.Data;
-using MedicationAssistant.Helpers;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

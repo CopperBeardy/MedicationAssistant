@@ -38,11 +38,8 @@ namespace MedicationAssistant.Pages
             }
         }
         protected override async Task OnInitializedAsync()
-        {
-
-
-            UserService us = new UserService(AuthenticationStateProvider, dbFactory);
-            User = us.GetUser();
+        {    
+            User = UserService.GetUser(dbFactory.CreateDbContext(),AuthenticationStateProvider);
 
             using (var context = dbFactory.CreateDbContext())
             {

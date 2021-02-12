@@ -15,7 +15,7 @@ namespace MedicationAssistant.ConfigureServiceExtensions
             this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IAlert, PrescriptionItemAlert>();
-            services.AddScoped<IUserService, UserService>();
+          
             services.AddScoped<IMedicineService, MedicineService>();
             services.AddScoped<IPrescriptionService, PrescriptionService>();
 
