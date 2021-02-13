@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MedicationAssistant.Shared.Enums
+﻿namespace MedicationAssistant.Shared.Enums
 {
     public enum Frequency
     {
@@ -15,5 +9,4 @@ namespace MedicationAssistant.Shared.Enums
         AsNeeded,
         Nightly
     }
-    
 }

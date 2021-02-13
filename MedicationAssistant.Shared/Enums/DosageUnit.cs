@@ -1,5 +1,4 @@
 ﻿namespace MedicationAssistant.Shared.Enums
-
 {
     public enum DosageUnit
     {

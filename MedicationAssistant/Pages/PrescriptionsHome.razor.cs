@@ -1,4 +1,5 @@
 ﻿using MedicationAssistant.Data;
+using MedicationAssistant.Helpers;
 using MedicationAssistant.Services;
 using MedicationAssistant.Shared.Models;
 using Microsoft.AspNetCore.Components;
@@ -14,18 +15,14 @@ namespace MedicationAssistant.Pages
     public partial class PrescriptionsHome
     {
         [Inject]
-        IDbContextFactory<MedicationAssistantDBContext> dbFactory { get; set; }
+        IDbContextFactory<MedAstDBContext> dbFactory { get; set; }
 
         [Inject]
         AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         public IEnumerable<Prescription> Prescriptions;
-
         public User User;
-
         public IEnumerable<Medicine> Medicines;
-
         IEnumerable<Medicine> Values { get; set; }
-
 
         Prescription selectedPrescription;
         public Prescription SelectedPrescription
@@ -39,24 +36,16 @@ namespace MedicationAssistant.Pages
         }
         protected override async Task OnInitializedAsync()
         {    
-            User = UserService.GetUser(dbFactory.CreateDbContext(),AuthenticationStateProvider);
+            User = UserHelper.GetUser(dbFactory.CreateDbContext(),AuthenticationStateProvider);
+            using (var context = dbFactory.CreateDbContext())            {
 
-            using (var context = dbFactory.CreateDbContext())
-            {
-
-                Prescriptions = await new PrescriptionService().GetRequiredAmountFullPrescriptions(dbFactory.CreateDbContext(), User.Id);
-
+                Prescriptions = await new PrescriptionService().GetPrescriptions(dbFactory.CreateDbContext(), User.Id);
                 Medicines = context.Medicines.ToList();
-
-
             }
-
             if (!Prescriptions.Count().Equals(0))
             {
                 SelectedPrescription = Prescriptions.First();
             }
-
-
         }
         //todo get all prescriptions for the current user from database
         public void OnRowRemoving(Prescription prescription)
@@ -72,8 +61,5 @@ namespace MedicationAssistant.Pages
         {
 
         }
-
-
-
     }
 }

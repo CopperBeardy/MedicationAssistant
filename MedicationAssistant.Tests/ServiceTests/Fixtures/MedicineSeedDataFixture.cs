@@ -12,18 +12,18 @@ namespace MedicationAssistant.Tests.ServiceTests.Fixtures
 {
     public class MedicineSeedDataFixture : IDisposable
     {
-        public MedicationAssistantDBContext context { get; private set; } 
-        public DbContextOptions<MedicationAssistantDBContext> contextOptions { get; set;  }
-        public MedicationAssistantDBContext MakeContext() => new MedicationAssistantDBContext(contextOptions);
+        public MedAstDBContext context { get; private set; } 
+        public DbContextOptions<MedAstDBContext> contextOptions { get; set;  }
+        public MedAstDBContext MakeContext() => new MedAstDBContext(contextOptions);
 
         public MedicineSeedDataFixture()
         {
 
-            contextOptions = new DbContextOptionsBuilder<MedicationAssistantDBContext>()
+            contextOptions = new DbContextOptionsBuilder<MedAstDBContext>()
                      .UseInMemoryDatabase(databaseName:  Guid.NewGuid().ToString())
                     .Options;
 
-            context = new MedicationAssistantDBContext(contextOptions);
+            context = new MedAstDBContext(contextOptions);
 
             context.Medicines.Add( new Medicine()
             {

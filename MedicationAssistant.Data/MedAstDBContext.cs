@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MedicationAssistant.Data
 {
-    public class MedicationAssistantDBContext : DbContext
+    public class MedAstDBContext : DbContext
     {
-        public MedicationAssistantDBContext(DbContextOptions<MedicationAssistantDBContext> options)
+        public MedAstDBContext(DbContextOptions<MedAstDBContext> options)
            : base(options)
         {
             Debug.WriteLine($"{ContextId} context created");
@@ -19,15 +19,11 @@ namespace MedicationAssistant.Data
             base.OnModelCreating(modelBuilder);
         }
 
-
-   
-      
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<PrescriptionItemAlert> PrescriptionAlerts { get; set; }
-
 
         public override void Dispose()
         {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedicationAssistant.Data.Migrations
 {
-    [DbContext(typeof(MedicationAssistantDBContext))]
+    [DbContext(typeof(MedAstDBContext))]
     [Migration("20210121121651_initial")]
     partial class initial
     {

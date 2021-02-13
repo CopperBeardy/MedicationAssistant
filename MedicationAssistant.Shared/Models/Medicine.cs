@@ -4,11 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedicationAssistant.Shared.Models
 {
-
-    /// <summary>
-    /// this is the class for connecting
-    /// all brand with a single medications
-    /// </summary>
     public class Medicine 
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

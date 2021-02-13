@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedicationAssistant.Data.Migrations
 {
-    [DbContext(typeof(MedicationAssistantDBContext))]
+    [DbContext(typeof(MedAstDBContext))]
     partial class MedicationAssistantDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -1,6 +1,6 @@
 ﻿@page "/Dashboard"
 
-@inject IDbContextFactory<MedicationAssistantDBContext> dbFactory;
+@inject IDbContextFactory<MedAstDBContext> dbFactory;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
@@ -23,7 +23,7 @@
     protected override async Task OnInitializedAsync()
     {
         using (var cont = dbFactory.CreateDbContext()){
-            User = UserService.GetUser(cont,AuthenticationStateProvider);
+            User = UserHelper.GetUser(cont,AuthenticationStateProvider);
 
             if (User == null)
             {
@@ -33,7 +33,7 @@
             else
             {
                 User.Alerts = await new AlertService().GetPrescriptionItemAlerts(cont, User.Id);              
-                User.Prescriptions = await new PrescriptionService().GetRequiredAmountFullPrescriptions(cont,User.Id);
+                User.Prescriptions = await new PrescriptionService().GetRequiredAmountFullPrescriptions(cont,User.Id,5);
             }
         }
     }

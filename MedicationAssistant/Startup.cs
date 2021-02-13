@@ -9,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using MedicationAssistant.Shared.Models;
-using MedicationAssistant.Services;
 using MedicationAssistant.ConfigureServiceExtensions;
 
 namespace MedicationAssistant
@@ -30,7 +29,7 @@ namespace MedicationAssistant
             services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
      
-            services.AddDbContextFactory<MedicationAssistantDBContext>(opt =>
+            services.AddDbContextFactory<MedAstDBContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             ServiceExtensions.AddConfig(services, Configuration);

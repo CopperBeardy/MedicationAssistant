@@ -1,4 +1,5 @@
 ﻿using MedicationAssistant.Data;
+using MedicationAssistant.Services.Interfaces;
 using MedicationAssistant.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -10,75 +11,67 @@ namespace MedicationAssistant.Services
 {
     public class PrescriptionService : IPrescriptionService
     {
-       
-        public async Task<IEnumerable<Prescription>> GetPrescriptions(MedicationAssistantDBContext context)
-        {
-            try
-            {
-               return await context.Prescriptions.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("could not retrieve Prescriptions ", ex);
-            }
-        }
-
-        public async Task<List<Prescription>> GetRequiredAmountFullPrescriptions(MedicationAssistantDBContext context, string userId)
+        public async Task<IEnumerable<Prescription>> GetPrescriptions(MedAstDBContext context, string userId)
         {
             try
             {
                 return await context.Prescriptions
-                    .Where(prescription => prescription.UserId.Equals(userId))
-                .OrderByDescending(time => time.CollectedOn)
-                .Take(5)
-                .Include(items => items.PrescriptionItems)
-                .ThenInclude(m => m.Medicine)
-                .ToListAsync();
+                                    .Where(prescription => prescription.UserId.Equals(userId))
+                                    .OrderByDescending(time => time.CollectedOn)
+                                    .Include(items => items.PrescriptionItems)
+                                    .ThenInclude(m => m.Medicine)
+                                    .ToListAsync();
             }
             catch (Exception ex)
             {
                 throw new Exception("could not retrieve Prescriptions ", ex);
             }
-         
-           
         }
 
-        public async Task<bool> RemovePrescription(MedicationAssistantDBContext context, Prescription Prescription)
+        public async Task<List<Prescription>> GetRequiredAmountFullPrescriptions(MedAstDBContext context, string userId, int count)
+        {
+            try
+            {
+                return await context.Prescriptions
+                                    .Where(prescription => prescription.UserId.Equals(userId))
+                                    .OrderByDescending(time => time.CollectedOn)
+                                    .Take(count)
+                                    .Include(items => items.PrescriptionItems)
+                                    .ThenInclude(m => m.Medicine)
+                                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("could not retrieve Prescriptions ", ex);
+            }
+        }
+
+        public async Task<bool> RemovePrescription(MedAstDBContext context, Prescription Prescription)
         {
             bool success = false;
-
             try
             {
                 if (await context.Prescriptions.AnyAsync(x => x.Id == Prescription.Id))
                 {
-
                     context.Prescriptions.Remove(Prescription);
                     await context.SaveChangesAsync();
                     success = true;
-
                 }
             }
             catch (Exception ex)
             {
-
                 throw new Exception($"Error occured trying to remove entity with id: {Prescription.Id}", ex);
             }
-           
-
-
             return success;
         }
 
-        public async Task UpdatePrescription(MedicationAssistantDBContext context, Prescription Prescription, Dictionary<string, object> newValues)
+        public async Task UpdatePrescription(MedAstDBContext context, Prescription Prescription, Dictionary<string, object> newValues)
         {
-
             try
             {
                 if (await context.Prescriptions.AnyAsync(x => x.Id == Prescription.Id))
                 {
-
                     context.Prescriptions.Update(SetValues(Prescription, newValues));
-
                     await context.SaveChangesAsync();
                 }
             }
@@ -88,9 +81,8 @@ namespace MedicationAssistant.Services
             }
         }
 
-        public async Task InsertPrescription(MedicationAssistantDBContext context, Prescription Prescription, Dictionary<string, object> values)
+        public async Task InsertPrescription(MedAstDBContext context, Prescription Prescription, Dictionary<string, object> values)
         {
-
             try
             {
                 context.Prescriptions.Add(SetValues(Prescription, values));
@@ -114,8 +106,6 @@ namespace MedicationAssistant.Services
                     case "PrescriptionItems":
                         pre.PrescriptionItems = (List<PrescriptionItem>)newValues[item];
                         break;
-                  
-                  
                 }
             }
             return pre;

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\NewFolder\**" />
+    <Content Remove="Services\NewFolder\**" />
+    <EmbeddedResource Remove="Services\NewFolder\**" />
+    <None Remove="Services\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
    <PackageReference Include="DevExpress.Blazor" Version="20.2.5" />
   
    <PackageReference Include="Microsoft.Identity.Web" Version="1.5.1" />
