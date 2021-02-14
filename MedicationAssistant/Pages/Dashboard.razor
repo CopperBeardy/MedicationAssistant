@@ -9,31 +9,30 @@
       <div class="top-left">box for user details upper left side </div>
     
         <div class="bottom-left">
-            <PrescriptionsSmallComponent Prescriptions="@User.Prescriptions" />
+            <PrescriptionsSmallComponent Prescriptions="@Account.Prescriptions" />
    </div>
         <div class="bottom-right">
-            <PrescriptionAlertSmallComponent PrescriptionItemAlerts="@User.Alerts" />
+            <PrescriptionAlertSmallComponent PrescriptionItemAlerts="@Account.Alerts" />
         </div>
 </div>
 
 @code {
     [Parameter]
-    public User User { get; set; }
-
+    public Account Account { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        using (var cont = dbFactory.CreateDbContext()){
-            User = UserHelper.GetUser(cont,AuthenticationStateProvider);
+        using (var cont = dbFactory.CreateDbContext())
+        {
+            Account = UserHelper.GetAccount(cont, AuthenticationStateProvider);
 
-            if (User == null)
+            if (Account == null)
             {
-                cont.Users.Add(new User() { Id = User.Id });
+               cont.Accounts.Add(Account);
                 cont.SaveChanges();
             }
             else
             {
-                User.Alerts = await new AlertService().GetPrescriptionItemAlerts(cont, User.Id);              
-                User.Prescriptions = await new PrescriptionService().GetRequiredAmountFullPrescriptions(cont,User.Id,5);
+                Account = await new AccountService(dbFactory).GetAccount(Account);
             }
         }
     }

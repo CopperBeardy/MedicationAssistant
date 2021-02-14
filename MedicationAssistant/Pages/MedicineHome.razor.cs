@@ -1,7 +1,6 @@
 ﻿using MedicationAssistant.Convertor;
 using MedicationAssistant.Data;
 using MedicationAssistant.Services;
-using MedicationAssistant.Services.Interfaces;
 using MedicationAssistant.Shared.Enums;
 using MedicationAssistant.Shared.Models;
 using Microsoft.AspNetCore.Components;
@@ -17,33 +16,33 @@ namespace MedicationAssistant.Pages
     {
         [Inject]
         IDbContextFactory<MedAstDBContext> dbFactory { get; set; }
-        protected IMedicineService MedicineService { get; set; }
+   
         IEnumerable<Medicine> Medicines = Enumerable.Empty<Medicine>();
         IEnumerable<string> DosageUnits = Enumerable.Empty<string>();
 
         protected override async Task OnInitializedAsync()
         {
-            MedicineService = new MedicineService();
-            Medicines = await MedicineService.GetMedicines(dbFactory.CreateDbContext());
+          
+            Medicines = await new MedicineService(dbFactory).GetMedicines();
             DosageUnits = DosageUnitValueConvertor.ConvertUnits();
         }
 
         async Task OnRowRemoving(Medicine Medicine)
         {
-            await MedicineService.RemoveMedicine(dbFactory.CreateDbContext(), Medicine);
+            await new MedicineService(dbFactory).RemoveMedicine( Medicine);
             Medicines = Medicines.Where(m => m != Medicine);
             await InvokeAsync(() => StateHasChanged());
         }
 
         async Task OnRowUpdating(Medicine Medicine, Dictionary<string, object> newValues)
         {
-            await MedicineService.UpdateMedicine(dbFactory.CreateDbContext(), Medicine, newValues);
+            await new MedicineService(dbFactory).UpdateMedicine( Medicine, newValues);
         }
 
         async Task OnRowInserting(Dictionary<string, object> values)
         {
             var newMed = new Medicine();
-            await MedicineService.InsertMedicine(dbFactory.CreateDbContext(), newMed, values);
+            await new MedicineService(dbFactory).InsertMedicine(values);
             Medicines = (new Medicine[] { newMed }).Concat(Medicines);
             await InvokeAsync(() => StateHasChanged());
         }

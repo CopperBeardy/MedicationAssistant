@@ -22,7 +22,7 @@ namespace MedicationAssistant.Data
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<PrescriptionItemAlert> PrescriptionAlerts { get; set; }
 
         public override void Dispose()

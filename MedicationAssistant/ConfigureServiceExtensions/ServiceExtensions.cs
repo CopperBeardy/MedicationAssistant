@@ -14,6 +14,7 @@ namespace MedicationAssistant.ConfigureServiceExtensions
             services.AddScoped<IAlertService, AlertService>();
             services.AddScoped<IMedicineService, MedicineService>();
             services.AddScoped<IPrescriptionService, PrescriptionService>();
+           services.AddScoped<IAccountService, AccountService>();
 
             return services;
         }

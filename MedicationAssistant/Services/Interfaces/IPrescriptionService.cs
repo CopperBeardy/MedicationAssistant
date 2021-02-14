@@ -9,10 +9,10 @@ namespace MedicationAssistant.Services.Interfaces
 {
     public interface IPrescriptionService
     {
-        Task<IEnumerable<Prescription>> GetPrescriptions(MedAstDBContext context, string userId);
-        Task<List<Prescription>> GetRequiredAmountFullPrescriptions(MedAstDBContext context, string userId, int count);
-        Task InsertPrescription(MedAstDBContext context, Prescription Prescription, Dictionary<string, object> values);
-        Task<bool> RemovePrescription(MedAstDBContext context, Prescription Prescription);
-        Task UpdatePrescription(MedAstDBContext context, Prescription Prescription, Dictionary<string, object> newValues);
+        Task<IEnumerable<Prescription>> GetPrescriptions( string userId);
+        Task<IEnumerable<Prescription>> GetRequiredAmountFullPrescriptions( string userId, int count);
+        Task InsertPrescription(Dictionary<string, object> values);
+        Task<bool> RemovePrescription( Prescription Prescription);
+        Task UpdatePrescription(Prescription Prescription, Dictionary<string, object> newValues);
     }
 }

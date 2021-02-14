@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MedicationAssistant.Shared.Models
 {
-    public class User
+    public class Account
     {  
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Id { get; set; }
-        public List<Prescription> Prescriptions { get; set; } = new List<Prescription>();
-        public List<PrescriptionItemAlert> Alerts { get; set; } = new List<PrescriptionItemAlert>();
+        public IEnumerable<Prescription> Prescriptions { get; set; } 
+        public IEnumerable<PrescriptionItemAlert> Alerts { get; set; } 
         
         [Timestamp]
         public byte[] TimeStamp { get; set; }

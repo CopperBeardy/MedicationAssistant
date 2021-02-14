@@ -11,88 +11,115 @@ namespace MedicationAssistant.Services
 {
     public class PrescriptionService : IPrescriptionService
     {
-        public async Task<IEnumerable<Prescription>> GetPrescriptions(MedAstDBContext context, string userId)
+        readonly IDbContextFactory<MedAstDBContext> contextFactory;
+        public PrescriptionService(IDbContextFactory<MedAstDBContext> contextFactory)
         {
-            try
-            {
-                return await context.Prescriptions
-                                    .Where(prescription => prescription.UserId.Equals(userId))
-                                    .OrderByDescending(time => time.CollectedOn)
-                                    .Include(items => items.PrescriptionItems)
-                                    .ThenInclude(m => m.Medicine)
-                                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("could not retrieve Prescriptions ", ex);
-            }
+            this.contextFactory = contextFactory;
         }
-
-        public async Task<List<Prescription>> GetRequiredAmountFullPrescriptions(MedAstDBContext context, string userId, int count)
+        public async Task<IEnumerable<Prescription>> GetPrescriptions(string userId)
         {
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                return await context.Prescriptions
-                                    .Where(prescription => prescription.UserId.Equals(userId))
-                                    .OrderByDescending(time => time.CollectedOn)
-                                    .Take(count)
-                                    .Include(items => items.PrescriptionItems)
-                                    .ThenInclude(m => m.Medicine)
-                                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("could not retrieve Prescriptions ", ex);
-            }
-        }
-
-        public async Task<bool> RemovePrescription(MedAstDBContext context, Prescription Prescription)
-        {
-            bool success = false;
-            try
-            {
-                if (await context.Prescriptions.AnyAsync(x => x.Id == Prescription.Id))
+                try
                 {
-                    context.Prescriptions.Remove(Prescription);
-                    await context.SaveChangesAsync();
-                    success = true;
+                    return await context.Prescriptions
+                                        .Where(prescription => prescription.AccountId.Equals(userId))
+                                        .OrderByDescending(time => time.CollectedOn)
+                                        .Include(items => items.PrescriptionItems)
+                                        .ThenInclude(m => m.Medicine)
+                                        .ToListAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("could not retrieve Prescriptions ", ex);
                 }
             }
-            catch (Exception ex)
+        }
+
+        public async Task<Prescription> GetById(int id)
+        {
+            using (var context = contextFactory.CreateDbContext()) 
             {
-                throw new Exception($"Error occured trying to remove entity with id: {Prescription.Id}", ex);
+                return await context.Prescriptions.FirstOrDefaultAsync(x => x.Id == id);
+            }
+        }
+
+        public async Task<IEnumerable<Prescription>> GetRequiredAmountFullPrescriptions(string userId, int count)
+        {
+            using (var context = contextFactory.CreateDbContext())
+            {
+                try
+                {
+                    return await context.Prescriptions
+                                        .Where(prescription => prescription.AccountId.Equals(userId))
+                                        .OrderByDescending(time => time.CollectedOn)
+                                        .Take(count)
+                                        .Include(items => items.PrescriptionItems)
+                                        .ThenInclude(m => m.Medicine)
+                                        .ToListAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("could not retrieve Prescriptions ", ex);
+                }
+            }
+        }
+        public async Task<bool> RemovePrescription(Prescription Prescription)
+        {
+            bool success = false;
+            using (var context = contextFactory.CreateDbContext())
+            {
+                try
+                {
+                    if (await context.Prescriptions.AnyAsync(x => x.Id == Prescription.Id))
+                    {
+                        context.Prescriptions.Remove(Prescription);
+                        await context.SaveChangesAsync();
+                        success = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error occured trying to remove entity with id: {Prescription.Id}", ex);
+                }
             }
             return success;
         }
 
-        public async Task UpdatePrescription(MedAstDBContext context, Prescription Prescription, Dictionary<string, object> newValues)
+        public async Task UpdatePrescription(Prescription Prescription, Dictionary<string, object> newValues)
         {
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                if (await context.Prescriptions.AnyAsync(x => x.Id == Prescription.Id))
+                try
                 {
-                    context.Prescriptions.Update(SetValues(Prescription, newValues));
-                    await context.SaveChangesAsync();
+                    if (await context.Prescriptions.AnyAsync(x => x.Id == Prescription.Id))
+                    {
+                        context.Prescriptions.Update(SetValues(Prescription, newValues));
+                        await context.SaveChangesAsync();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error while trying to update Prescription object", ex);
+                catch (Exception ex)
+                {
+                    throw new Exception("Error while trying to update Prescription object", ex);
+                }
             }
         }
 
-        public async Task InsertPrescription(MedAstDBContext context, Prescription Prescription, Dictionary<string, object> values)
+        public async Task InsertPrescription(Dictionary<string, object> values)
         {
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                context.Prescriptions.Add(SetValues(Prescription, values));
-                await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error while trying to Inserting Prescription object", ex);
-            }
+                try
+                {
 
+                    context.Prescriptions.Add(SetValues(new Prescription(), values));
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error while trying to Inserting Prescription object", ex);
+                }
+            }
         }
         private Prescription SetValues(Prescription pre, Dictionary<string, object> newValues)
         {
@@ -104,7 +131,7 @@ namespace MedicationAssistant.Services
                         pre.CollectedOn = (DateTime)newValues[item];
                         break;
                     case "PrescriptionItems":
-                        pre.PrescriptionItems = (List<PrescriptionItem>)newValues[item];
+                        pre.PrescriptionItems = (IQueryable<PrescriptionItem>)newValues[item];
                         break;
                 }
             }

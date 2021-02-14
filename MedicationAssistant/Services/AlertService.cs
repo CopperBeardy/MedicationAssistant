@@ -12,68 +12,86 @@ namespace MedicationAssistant.Services
 {
     public class AlertService : IAlertService
     {
-        public async Task<List<PrescriptionItemAlert>> GetPrescriptionItemAlerts(MedAstDBContext context, string userId)
+        readonly IDbContextFactory<MedAstDBContext> contextFactory;
+        public AlertService(IDbContextFactory<MedAstDBContext> contextFactory)
         {
-            try
+            this.contextFactory = contextFactory;
+        }
+
+        public async Task<IEnumerable<PrescriptionItemAlert>> GetPrescriptionItemAlerts(string userId)
+        {
+            using (var context = contextFactory.CreateDbContext())
             {
-                return await context.PrescriptionAlerts
-                                    .Where(alert => alert.UserId.Equals(userId))
-                                    .Include(items => items.PrescriptionItems)
-                                    .OrderByDescending(time => time.Time)
-                                    .Take(5)
-                                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("could not retrieve PrescriptionItemAlerts ", ex);
+                try
+                {
+                    return await context.PrescriptionAlerts
+                                        .Where(alert => alert.AccountId.Equals(userId))
+                                        .Include(items => items.PrescriptionItems)
+                                        .OrderByDescending(time => time.Time)
+                                        .Take(5)
+                                        .ToListAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("could not retrieve PrescriptionItemAlerts ", ex);
+                }
             }
         }
 
-        public async Task<bool> RemovePrescriptionItemAlert(MedAstDBContext context, PrescriptionItemAlert PrescriptionItemAlert)
+        public async Task<bool> RemovePrescriptionItemAlert(PrescriptionItemAlert PrescriptionItemAlert)
         {
             bool success = false;
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                if (await context.PrescriptionAlerts.AnyAsync(x => x.Id == PrescriptionItemAlert.Id))
+                try
                 {
-                    context.PrescriptionAlerts.Remove(PrescriptionItemAlert);
-                    await context.SaveChangesAsync();
-                    success = true;
+                    if (await context.PrescriptionAlerts.AnyAsync(x => x.Id == PrescriptionItemAlert.Id))
+                    {
+                        context.PrescriptionAlerts.Remove(PrescriptionItemAlert);
+                        await context.SaveChangesAsync();
+                        success = true;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error occured trying to remove entity with id: {PrescriptionItemAlert.Id}", ex);
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error occured trying to remove entity with id: {PrescriptionItemAlert.Id}", ex);
+                }
             }
             return success;
         }
 
-        public async Task UpdatePrescriptionItemAlert(MedAstDBContext context, PrescriptionItemAlert PrescriptionItemAlert, Dictionary<string, object> newValues)
+        public async Task UpdatePrescriptionItemAlert(PrescriptionItemAlert PrescriptionItemAlert, Dictionary<string, object> newValues)
         {
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                if (await context.PrescriptionAlerts.AnyAsync(x => x.Id == PrescriptionItemAlert.Id))
+                try
                 {
-                    context.PrescriptionAlerts.Update(SetValues(PrescriptionItemAlert, newValues));
-                    await context.SaveChangesAsync();
+                    if (await context.PrescriptionAlerts.AnyAsync(x => x.Id == PrescriptionItemAlert.Id))
+                    {
+                        context.PrescriptionAlerts.Update(SetValues(PrescriptionItemAlert, newValues));
+                        await context.SaveChangesAsync();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error while trying to update PrescriptionItemAlert object", ex);
+                catch (Exception ex)
+                {
+                    throw new Exception("Error while trying to update PrescriptionItemAlert object", ex);
+                }
             }
         }
 
-        public async Task InsertPrescriptionItemAlert(MedAstDBContext context, PrescriptionItemAlert PrescriptionItemAlert, Dictionary<string, object> values)
+        public async Task InsertPrescriptionItemAlert( Dictionary<string, object> values)
         {
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                context.PrescriptionAlerts.Add(SetValues(PrescriptionItemAlert, values));
-                await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error while trying to Inserting PrescriptionItemAlert object", ex);
+                try
+                {
+                    context.PrescriptionAlerts.Add(SetValues(new(), values));
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error while trying to Inserting PrescriptionItemAlert object", ex);
+                }
             }
         }
 

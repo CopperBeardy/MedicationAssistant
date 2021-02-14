@@ -16,36 +16,16 @@ namespace MedicationAssistant.Pages
     {
         [Inject]
         IDbContextFactory<MedAstDBContext> dbFactory { get; set; }
-
         [Inject]
         AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        public IEnumerable<Prescription> Prescriptions;
-        public User User;
-        public IEnumerable<Medicine> Medicines;
-        IEnumerable<Medicine> Values { get; set; }
+          
+        public IEnumerable<Prescription> Prescriptions;     
 
-        Prescription selectedPrescription;
-        public Prescription SelectedPrescription
-        {
-            get { return selectedPrescription; }
-            set
-            {
-                selectedPrescription = value;
-                InvokeAsync(StateHasChanged);
-            }
-        }
+     
         protected override async Task OnInitializedAsync()
         {    
-            User = UserHelper.GetUser(dbFactory.CreateDbContext(),AuthenticationStateProvider);
-            using (var context = dbFactory.CreateDbContext())            {
-
-                Prescriptions = await new PrescriptionService().GetPrescriptions(dbFactory.CreateDbContext(), User.Id);
-                Medicines = context.Medicines.ToList();
-            }
-            if (!Prescriptions.Count().Equals(0))
-            {
-                SelectedPrescription = Prescriptions.First();
-            }
+            string id= UserHelper.GetUserId(AuthenticationStateProvider);           
+            Prescriptions = await new PrescriptionService(dbFactory).GetPrescriptions(id);   
         }
         //todo get all prescriptions for the current user from database
         public void OnRowRemoving(Prescription prescription)

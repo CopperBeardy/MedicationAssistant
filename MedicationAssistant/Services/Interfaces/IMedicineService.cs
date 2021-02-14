@@ -9,9 +9,9 @@ namespace MedicationAssistant.Services.Interfaces
 {
     public interface IMedicineService
     {
-        Task<IEnumerable<Medicine>> GetMedicines(MedAstDBContext dbContext);
-        Task InsertMedicine(MedAstDBContext dbContext, Medicine medince, Dictionary<string, object> values);
-        Task<bool> RemoveMedicine(MedAstDBContext dbContext, Medicine medicine);
-        Task UpdateMedicine(MedAstDBContext dbContext,Medicine medicine, Dictionary<string, object> newValues);
+        Task<IEnumerable<Medicine>> GetMedicines();
+        Task InsertMedicine(Dictionary<string, object> values);
+        Task<bool> RemoveMedicine(Medicine medicine);
+        Task UpdateMedicine(Medicine medicine, Dictionary<string, object> newValues);
     }
 }

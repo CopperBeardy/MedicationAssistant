@@ -12,65 +12,82 @@ namespace MedicationAssistant.Services
 {
     public class MedicineService : IMedicineService
     {
-        private List<Medicine> Medicines { get; set; }
-        public async Task<IEnumerable<Medicine>> GetMedicines(MedAstDBContext context)
+        readonly IDbContextFactory<MedAstDBContext> contextFactory;
+        public MedicineService(IDbContextFactory<MedAstDBContext> contextFactory)
         {
-            try
-            { 
-                Medicines = await context.Medicines.ToListAsync();
-            }
-            catch (Exception ex)
+            this.contextFactory = contextFactory;
+        }
+        private List<Medicine> Medicines { get; set; }
+        public async Task<IEnumerable<Medicine>> GetMedicines()
+        {
+            using (var context = contextFactory.CreateDbContext())
             {
-                throw new Exception("could not retrieve Medicines ",ex);
+                try
+                {
+                    Medicines = await context.Medicines.ToListAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("could not retrieve Medicines ", ex);
+                }
             }
             return Medicines;
         }
 
-        public async Task<bool> RemoveMedicine(MedAstDBContext context,Medicine medicine)
+        public async Task<bool> RemoveMedicine(Medicine medicine)
         {
             bool success = false;
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                if (await context.Medicines.AnyAsync(x => x.Id == medicine.Id))
+                try
                 {
-                    context.Medicines.Remove(medicine);
-                    await context.SaveChangesAsync();
-                    success = true;
+                    if (await context.Medicines.AnyAsync(x => x.Id == medicine.Id))
+                    {
+                        context.Medicines.Remove(medicine);
+                        await context.SaveChangesAsync();
+                        success = true;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error occured trying to remove entity with id: {medicine.Id}", ex);
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error occured trying to remove entity with id: {medicine.Id}", ex);
+                }
             }
             return success;
         }
 
-        public async Task UpdateMedicine(MedAstDBContext context,Medicine medicine, Dictionary<string, object> newValues)
+        public async Task UpdateMedicine(Medicine medicine, Dictionary<string, object> newValues)
         {
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                if (await context.Medicines.AnyAsync(x => x.Id == medicine.Id))
+                try
                 {
-                    context.Medicines.Update(SetValues(medicine, newValues));
-                    await context.SaveChangesAsync();
+                    if (await context.Medicines.AnyAsync(x => x.Id == medicine.Id))
+                    {
+                        context.Medicines.Update(SetValues(medicine, newValues));
+                        await context.SaveChangesAsync();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error while trying to update Medicine object", ex);
+                catch (Exception ex)
+                {
+                    throw new Exception("Error while trying to update Medicine object", ex);
+                }
             }
         }
 
-        public async Task InsertMedicine(MedAstDBContext context,Medicine medicine, Dictionary<string, object> values)
+        public async Task InsertMedicine(Dictionary<string, object> values)
         {
-            try
+            using (var context = contextFactory.CreateDbContext())
             {
-                context.Medicines.Add(SetValues(medicine, values)); 
-                await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error while trying to Inserting Medicine object", ex);
+                try
+                {
+                    context.Medicines.Add(SetValues(new(), values));
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error while trying to Inserting Medicine object", ex);
+                }
             }
         }
 

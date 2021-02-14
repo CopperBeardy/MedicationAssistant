@@ -8,8 +8,12 @@ namespace MedicationAssistant.Helpers
 {
     public static class UserHelper 
     { 
-        public static User GetUser(MedAstDBContext cont,AuthenticationStateProvider authStateProvide) =>
-            cont.Users.FirstOrDefault(x => x.Id.Equals(authStateProvide.GetAuthenticationStateAsync()
+        public static Account GetAccount(MedAstDBContext cont,AuthenticationStateProvider authStateProvide) =>
+            cont.Accounts.FirstOrDefault(x => x.Id.Equals(authStateProvide.GetAuthenticationStateAsync()
                 .Result.User.FindFirst(ClaimTypes.NameIdentifier).Value));
+
+        public static string GetUserId(AuthenticationStateProvider authenticationStateProvider) =>
+           authenticationStateProvider.GetAuthenticationStateAsync()
+           .Result.User.FindFirst(ClaimTypes.NameIdentifier).Value;
     }
 }

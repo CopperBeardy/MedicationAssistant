@@ -9,9 +9,9 @@ namespace MedicationAssistant.Services.Interfaces
 {
     public interface IAlertService
     {
-        Task<List<PrescriptionItemAlert>> GetPrescriptionItemAlerts(MedAstDBContext context, string userId);
-        Task InsertPrescriptionItemAlert(MedAstDBContext context, PrescriptionItemAlert PrescriptionItemAlert, Dictionary<string, object> values);
-        Task<bool> RemovePrescriptionItemAlert(MedAstDBContext context, PrescriptionItemAlert PrescriptionItemAlert);
-        Task UpdatePrescriptionItemAlert(MedAstDBContext context, PrescriptionItemAlert PrescriptionItemAlert, Dictionary<string, object> newValues);
+        Task<IEnumerable<PrescriptionItemAlert>> GetPrescriptionItemAlerts(string userId);
+        Task InsertPrescriptionItemAlert(Dictionary<string, object> values);
+        Task<bool> RemovePrescriptionItemAlert(PrescriptionItemAlert PrescriptionItemAlert);
+        Task UpdatePrescriptionItemAlert(PrescriptionItemAlert PrescriptionItemAlert, Dictionary<string, object> newValues);
     }
 }

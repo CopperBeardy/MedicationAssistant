@@ -5,26 +5,12 @@
             RowRemoving="@((dataItem) => OnRowRemoving(dataItem))"
             RowUpdating="@((updatingDataItem, newValues) => OnRowUpdating(updatingDataItem, newValues))"
             RowInserting="@((newValues) => OnRowInserting(newValues))"
-            CssClass="mw-1100">
+            CssClass="mw-1100"
+            SelectionMode="DataGridSelectionMode.None">
 
     <DxDataGridCommandColumn Width="150px"></DxDataGridCommandColumn>
-       <DxDataGridColumn Field="@nameof(selectedPrescription.CollectedOn)"  Caption="Prescription Date">
-            <EditTemplate>
-                <DxCalendar 
-                @bind-SelectedDate="@selectedPrescription.CollectedOn" 
-                VisibleDate ="@selectedPrescription.CollectedOn"/>
-        <DxListBox  
-        Data="@Medicines"
-        @bind-Values="@Values"
-        TextFieldName="@nameof(Medicine.Name)">    
-</DxListBox>
-</EditTemplate>
-       </DxDataGridColumn>
-    <DxDataGridColumn EditorVisible="false" Field="@nameof(selectedPrescription.PrescriptionItems)" Caption="Item Count" Width="150px">
-        <DisplayTemplate>
-            @{
-                @selectedPrescription.PrescriptionItems.Count(); 
-            }
-        </DisplayTemplate>        
-    </DxDataGridColumn>  
+       <DxDataGridDateEditColumn Field="@nameof(Prescription.CollectedOn)"  Caption="Collected On" />
+     
+      
+   
 </DxDataGrid>

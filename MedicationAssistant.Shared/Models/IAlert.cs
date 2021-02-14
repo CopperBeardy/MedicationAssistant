@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MedicationAssistant.Shared.Models
 {
@@ -10,6 +11,6 @@ namespace MedicationAssistant.Shared.Models
         DateTime Time { get; set; }
         byte[] TimeStamp { get; set; }
         string Title { get; }        
-        List<PrescriptionItem> PrescriptionItems { get; set; }
+        IEnumerable<PrescriptionItem> PrescriptionItems { get; set; }
     }
 }
