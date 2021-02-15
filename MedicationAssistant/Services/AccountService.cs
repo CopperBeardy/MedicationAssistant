@@ -9,27 +9,30 @@ using System.Threading.Tasks;
 
 namespace MedicationAssistant.Services
 {
-    public class AccountService :IAccountService
-    { 
-
+    public class AccountService : IAccountService
+    {
         readonly IDbContextFactory<MedAstDBContext> contextFactory;
         readonly AuthenticationStateProvider AuthenticationStateProvider;
-
-        public AccountService(IDbContextFactory<MedAstDBContext> contextFactory,AuthenticationStateProvider authenticationStateProvider)
+        Account Account;
+    
+        public AccountService(IDbContextFactory<MedAstDBContext> contextFactory, AuthenticationStateProvider authenticationStateProvider)
         {
             this.AuthenticationStateProvider = authenticationStateProvider;
             this.contextFactory = contextFactory;
         }
-       
+        
         public async Task<Account> FindAccount()
         {
-            Account Account = UserHelper.GetAccount(contextFactory.CreateDbContext(), AuthenticationStateProvider);
-            Account = Account == null ? Create() : await GetAccount(Account);
-            return Account;
-        } 
-            
-         
-        private async Task<Account> GetAccount(Account Account)
+            using (var context = contextFactory.CreateDbContext())
+            {
+                Account = context
+                    .Accounts.FirstOrDefault(x =>
+                    x.Id.Equals(UserHelper.GetUserId(AuthenticationStateProvider)));
+            } 
+            return Account == null ? Create() : await GetAccountValues(Account);          
+        }
+
+        private async Task<Account> GetAccountValues(Account Account)
         {
             Account.Alerts = await new AlertService(contextFactory).GetPrescriptionItemAlerts(Account.Id);
             Account.Prescriptions = await new PrescriptionService(contextFactory).GetRequiredAmountFullPrescriptions(Account.Id, 5);
@@ -38,13 +41,13 @@ namespace MedicationAssistant.Services
         }
 
         private Account Create()
-        {            
+        {
             using (var context = contextFactory.CreateDbContext())
-            { 
-                   Account Account = new() { Id = UserHelper.GetUserId(AuthenticationStateProvider) };
-                   context.Accounts.Add(Account);
-                   context.SaveChanges();
-                   return Account;
+            {
+                Account = new() { Id = UserHelper.GetUserId(AuthenticationStateProvider) };
+                context.Accounts.Add(Account);
+                context.SaveChanges();
+                return Account;
             }
         }
     }

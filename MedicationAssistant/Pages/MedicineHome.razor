@@ -23,20 +23,16 @@
             @{
                 var editingContext = (CellEditContext)context;
                 var unit = Enum.GetName(typeof(DosageUnit),(editingContext.GetEditorValue(nameof(Medicine.DosageUnit))));
-                      
-            }
-            
+             }            
             <DxComboBox Data="@DosageUnits"
                         NullText ="Select a Dosage Unit"
                         Value="@unit"
                         ValueChanged="((string newCellValue) => {
                                     editingContext.OnChanged((Enum.Parse(typeof(DosageUnit),newCellValue)));
-                                })">
-                
+                                })">                
             </DxComboBox>
         </EditTemplate>
-    </DxDataGridComboBoxColumn>
-   
+    </DxDataGridComboBoxColumn>   
     <DxDataGridColumn Field="@nameof(Medicine.Description)" />
     <DxDataGridColumn Field="@nameof(Medicine.UseDirections)" />
 </DxDataGrid>
