@@ -18,22 +18,9 @@
 
 @code {
     [Parameter]
-    public Account Account { get; set; }
+    public Account Account { get; set; } = new Account();
     protected override async Task OnInitializedAsync()
     {
-        using (var cont = dbFactory.CreateDbContext())
-        {
-            Account = UserHelper.GetAccount(cont, AuthenticationStateProvider);
-
-            if (Account == null)
-            {
-               cont.Accounts.Add(Account);
-                cont.SaveChanges();
-            }
-            else
-            {
-                Account = await new AccountService(dbFactory).GetAccount(Account);
-            }
-        }
+        Account = await new AccountService(dbFactory,AuthenticationStateProvider).FindAccount();
     }
 }
