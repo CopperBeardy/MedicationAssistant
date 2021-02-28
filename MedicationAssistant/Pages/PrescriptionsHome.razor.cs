@@ -1,45 +1,58 @@
-﻿using MedicationAssistant.Data;
+﻿using MedicationAssistant.DAL;
 using MedicationAssistant.Helpers;
-using MedicationAssistant.Services;
-using MedicationAssistant.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicationAssistant.Pages
 {
+    [Authorize]
     public partial class PrescriptionsHome
     {
         [Inject]
-        IDbContextFactory<MedAstDBContext> dbFactory { get; set; }
+        private IDbContextFactory<MedAstDBContext> DbFactory { get; set; }
         [Inject]
-        AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-          
-        public IEnumerable<Prescription> Prescriptions;     
+        private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
-     
+        public static IEnumerable<PrescriptionModel> Prescriptions { get; set; }
+        [Inject]
+        private IPrescriptionRepository PrescriptionService { get; set; }
+
+
+
         protected override async Task OnInitializedAsync()
-        {    
-            string id= UserHelper.GetUserId(AuthenticationStateProvider);           
-            Prescriptions = await new PrescriptionService(dbFactory).GetPrescriptions(id);   
+        {
+            PrescriptionService = new PrescriptionRepository(DbFactory);
+            string id = UserHelper.GetUserId(AuthenticationStateProvider);
+            Prescriptions = await PrescriptionService.GetPrescriptions(id);
         }
+
+
+
+
         //todo get all prescriptions for the current user from database
-        public void OnRowRemoving(Prescription prescription)
+        public async Task OnRowRemoving(PrescriptionModel prescription)
         {
+            await PrescriptionService.RemovePrescription(prescription);
+            string id = UserHelper.GetUserId(AuthenticationStateProvider);
+            Prescriptions = await PrescriptionService.GetPrescriptions(id);
+        }
+
+        public async Task OnRowUpdating(PrescriptionModel prescription, Dictionary<string, object> newValues)
+        {
+            await PrescriptionService.UpdatePrescription(prescription, newValues);
+            await InvokeAsync(StateHasChanged);
 
         }
 
-        public void OnRowUpdating(Prescription prescription, Dictionary<string, object> newValues)
+        public async Task OnRowInserting(Dictionary<string, object> values)
         {
-        }
-
-        public void OnRowInserting(Dictionary<string, object> values)
-        {
-
+            await PrescriptionService.InsertPrescription(values);
+            string id = UserHelper.GetUserId(AuthenticationStateProvider);
+            Prescriptions = await PrescriptionService.GetPrescriptions(id);
         }
     }
 }

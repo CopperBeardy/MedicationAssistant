@@ -1,15 +1,27 @@
 ﻿@page "/prescriptions"
 
+
 <h3>Prescriptions </h3>
+
+@*<DxListBox Data="@Prescriptions"
+TextFieldName="@nameof(Prescription.CollectedOn)"
+ValueFieldName="@nameof(Prescription.PrescriptionItems)"
+SelectionMode="ListBoxSelectionMode.Single"
+@bind-Values="@Values">
+   
+</DxListBox>*@
+
 <DxDataGrid Data="@Prescriptions"
-            RowRemoving="@((dataItem) => OnRowRemoving(dataItem))"
-            RowUpdating="@((updatingDataItem, newValues) => OnRowUpdating(updatingDataItem, newValues))"
-            RowInserting="@((newValues) => OnRowInserting(newValues))"
+            RowRemovingAsync="@((dataItem) => OnRowRemoving(dataItem))"
+            RowUpdatingAsync="@((updatingDataItem, newValues) => OnRowUpdating(updatingDataItem,(Dictionary<string,object>) newValues))"
+            RowInsertingAsync="@((newValues) => OnRowInserting((Dictionary<string,object>)newValues))"
             CssClass="mw-1100"
-            SelectionMode="DataGridSelectionMode.None">
+            SelectionMode="DataGridSelectionMode.None"
+            AutoCollapseDetailRow="true"
+            ShowDetailRow="true">
 
     <DxDataGridCommandColumn Width="150px"></DxDataGridCommandColumn>
-       <DxDataGridDateEditColumn Field="@nameof(Prescription.CollectedOn)"  Caption="Collected On" />
+    <DxDataGridDateEditColumn Field="@nameof(Prescription.CollectedOn)"  Caption="Collected On" />
      
       
    

@@ -1,0 +1,20 @@
+﻿@*<h3>sample</h3>
+
+@if(hasLoaded)
+{
+  @ChildContent  
+}
+else
+{
+    <p>Loading....</p>
+}
+
+@code {
+   private  bool hasLoaded;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+
+} *@

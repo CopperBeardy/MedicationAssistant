@@ -1,20 +1,18 @@
-﻿using MedicationAssistant.Services;
-using MedicationAssistant.Services.Interfaces;
-using MedicationAssistant.Shared.Models;
-using Microsoft.Extensions.Configuration;
+﻿using MedicationAssistant.ServiceLayer.Profiles;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MedicationAssistant.ConfigureServiceExtensions
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddConfig(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddConfig(this IServiceCollection services)
         {
-            services.AddScoped<IAlert, PrescriptionItemAlert>();
-            services.AddScoped<IAlertService, AlertService>();
-            services.AddScoped<IMedicineService, MedicineService>();
-            services.AddScoped<IPrescriptionService, PrescriptionService>();
-           services.AddScoped<IAccountService, AccountService>();
+
+            services.AddScoped<IAlertRepository, AlertRepository>();
+            services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
+            services.AddScoped<MedicationRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddAutoMapper(typeof(AppProfile));
 
             return services;
         }

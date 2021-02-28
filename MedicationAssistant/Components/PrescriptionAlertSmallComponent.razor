@@ -1,12 +1,12 @@
 ﻿<h3>Next occurring alerts</h3>
 
 <div>
-    @if (PrescriptionItemAlerts != null)
+    @if (Alerts != null)
     {
     <ol>
-        @foreach (var prescriptionAlert in PrescriptionItemAlerts)
+        @foreach (var alert in Alerts)
         {
-            <li>Alert time : @prescriptionAlert.Time there are @prescriptionAlert.PrescriptionItems.Count() items on this alert
+            <li>Alert time : @alert.Time there are @alert.Medications.Count() items on this alert
             </li>
         }
     </ol>
@@ -16,5 +16,5 @@
 
 @code{ 
     [Parameter]
-    public IEnumerable<PrescriptionItemAlert> PrescriptionItemAlerts { get; set; }
+    public IEnumerable<Alert> Alerts { get; set; }
 }

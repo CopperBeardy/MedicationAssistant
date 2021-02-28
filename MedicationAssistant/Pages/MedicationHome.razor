@@ -1,0 +1,55 @@
+﻿@page "/Medications"
+
+
+<h3>Medications</h3>
+
+<DxDataGrid Data="@Medications"
+            ShowFilterRow="true"
+            RowRemovingAsync="@((dataItem) => OnRowRemoving(dataItem))"
+            RowUpdatingAsync="@((updatingDataItem, newValues) => OnRowUpdating(updatingDataItem, (Dictionary<string,object>)newValues))"
+            RowInsertingAsync="@((newValues) => OnRowInserting((Dictionary<string,object>)newValues))"
+            InitNewRow="@OnInitNewRow"
+            ShowPager="true"
+            PagerPageSizeSelectorVisible="true"
+            PagerAllDataRowsItemVisible="true"
+            PagerAllowedPageSizes=@(new int[] {2,10,20,40})
+            PagerNavigationMode=PagerNavigationMode.InputBox
+            CssClass="mw-1100">
+
+    <DxDataGridCommandColumn Width="150px" />
+    <DxDataGridColumn AllowFilter="true" Field="@nameof(Medication.Name)"/>
+    <DxDataGridSpinEditColumn Field="@nameof(Medication.Dosage)" Width="100px" />
+   <DxDataGridComboBoxColumn Data="@DosageUnits" Field="@nameof(Medication.DosageUnit)" Width="150px">
+        <EditTemplate>
+            @{
+                var editingContext = (CellEditContext)context;
+                var unit = Enum.GetName(typeof(DosageUnit),(editingContext.GetEditorValue(nameof(Medication.DosageUnit))));
+             }            
+            <DxComboBox Data="@DosageUnits"
+                        NullText ="Select DosageUnit"
+                        Value="@unit"
+                        ValueChanged="((string newCellValue) => {
+                                    editingContext.OnChanged((Enum.Parse(typeof(DosageUnit),newCellValue)));
+                                })">                
+            </DxComboBox>
+        </EditTemplate>
+    </DxDataGridComboBoxColumn>  
+    <DxDataGridSpinEditColumn Field="@nameof(Medication.Quantity)" Width="100px" />
+          <DxDataGridSpinEditColumn Field="@nameof(Medication.FrequencyUnit)" Width="100px" />
+    <DxDataGridComboBoxColumn Data="@Frequencies" Field="@nameof(Medication.Frequency)" Width="150px">
+        <EditTemplate>
+            @{
+                var editingContext = (CellEditContext)context;
+                var unit = Enum.GetName(typeof(Frequency),(editingContext.GetEditorValue(nameof(Medication.Frequency))));
+             }            
+            <DxComboBox Data="@Frequencies"
+                        NullText ="SelectFrequency"
+                        Value="@unit"
+                        ValueChanged="((string newCellValue) => {
+                                    editingContext.OnChanged((Enum.Parse(typeof(Frequency),newCellValue)));
+                                })">                
+            </DxComboBox>
+        </EditTemplate>
+    </DxDataGridComboBoxColumn>  
+    <DxDataGridColumn Field="@nameof(Medication.UseDirections)" />
+</DxDataGrid>

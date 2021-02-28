@@ -1,15 +1,10 @@
-using MedicationAssistant.Data;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using MedicationAssistant.ConfigureServiceExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
-using MedicationAssistant.Shared.Models;
-using MedicationAssistant.ConfigureServiceExtensions;
 
 namespace MedicationAssistant
 {
@@ -28,13 +23,13 @@ namespace MedicationAssistant
             services.AddRazorPages();
             services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
-     
-            services.AddDbContextFactory<MedAstDBContext>(opt =>
-            opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            ServiceExtensions.AddConfig(services, Configuration);
+            //services.AddDbContextFactory<MedAstDBContext>(opt =>
+            //opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            ServiceExtensions.AddConfig(services);
             services.AddHttpContextAccessor();
-         
+
 
         }
 

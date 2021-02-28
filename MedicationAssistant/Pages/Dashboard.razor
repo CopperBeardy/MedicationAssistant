@@ -1,5 +1,5 @@
 ﻿@page "/Dashboard"
-
+<AuthorizeView>
 @inject IDbContextFactory<MedAstDBContext> dbFactory;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -12,15 +12,16 @@
             <PrescriptionsSmallComponent Prescriptions="@Account.Prescriptions" />
    </div>
         <div class="bottom-right">
-            <PrescriptionAlertSmallComponent PrescriptionItemAlerts="@Account.Alerts" />
+            <PrescriptionAlertSmallComponent MedicationAlerts="@Account.Alerts" />
         </div>
 </div>
-
+</AuthorizeView>
 @code {
     [Parameter]
+
     public Account Account { get; set; } = new Account();
     protected override async Task OnInitializedAsync()
     {
-        Account = await new AccountService(dbFactory,AuthenticationStateProvider).FindAccount();
+        Account = await new AccountRepository(dbFactory,AuthenticationStateProvider).FindAccount();
     }
 }

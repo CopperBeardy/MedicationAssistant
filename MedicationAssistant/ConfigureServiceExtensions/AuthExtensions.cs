@@ -7,7 +7,7 @@ using Microsoft.Identity.Web.UI;
 namespace MedicationAssistant.ConfigureServiceExtensions
 {
     public static class AuthExtensions
-    {  
+    {
         public static IServiceCollection AddConfig(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
