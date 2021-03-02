@@ -1,20 +1,19 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MedicationAssistant.ServiceLayer.Models
+namespace MedicationAssistant.ViewModels
 {
-    public class PrescriptionDashBoardModel
+    public class PrescriptionViewModel
     {
 
         public int PrescriptionModelId { get; set; }
         [Required]
-        public HomeDashBoardModel Account { get; set; }
+        public string UserId { get; set; }
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd:MM:yy}")]
         public DateTime CollectedOn { get; set; }
-        public IEnumerable<MedicationDashboardModel> Medications { get; set; }
+        public IEnumerable<MedicationViewModel> Medications { get; set; }
 
 
 

@@ -1,4 +1,4 @@
-﻿using MedicationAssistant.Shared.Enums;
+﻿using MedicationAssistant.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MedicationAssistant.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace MedicationAssistant.Convertor

@@ -26,14 +26,16 @@ namespace MedicationAssistant.ServiceLayer.Repositories
             }
         }
 
-        public async Task<IEnumerable<Prescription>> GetRequiredAmountOfPrescriptionsWithMedicationsForUserAsync(string userId, int count)
+        public async Task<IEnumerable<Prescription>> GetRequiredAmountOfPrescriptionsAsync(string userId, int count)
         {
             try
             {
-                return await FindByCondition(prescription => prescription.UserId.Equals(userId))
+                var result = await FindByCondition(prescription => prescription.UserId.Equals(userId))
                     .OrderByDescending(x => x.CollectedOn)
                     .Take(count)
+                    .Include(x => x.Medications)
                     .ToListAsync();
+                return result;
             }
             catch (Exception ex)
             {
@@ -41,7 +43,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
             }
         }
 
-        public async Task<IEnumerable<Prescription>> GetPrescriptionsWithMedicationsForUserAsync(string userId)
+        public async Task<IEnumerable<Prescription>> GetPrescriptionsForUserAsync(string userId)
         {
             try
             {
@@ -57,7 +59,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
             }
         }
 
-        public async Task<Prescription> GetPrescriptionByIdWithMedicationsAsync(int PrescriptionId)
+        public async Task<Prescription> GetPrescriptionByIdAsync(int PrescriptionId)
         {
             try
             {

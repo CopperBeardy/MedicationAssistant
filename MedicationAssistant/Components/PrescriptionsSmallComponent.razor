@@ -8,7 +8,7 @@
        {
            <li>
                <label>Collected on : @prescription.CollectedOn</label>               
-               <label>with @prescription.Medications.Count() items</label>
+               <label>with @prescription.NumberOfMedications items</label>
            </li>
        }
    </ol>
@@ -19,5 +19,5 @@
 
 @code {
     [Parameter]
-    public IEnumerable<Prescription> Prescriptions { get; set;}
+    public IEnumerable<PrescriptionDateCount> Prescriptions { get; set;}
 }

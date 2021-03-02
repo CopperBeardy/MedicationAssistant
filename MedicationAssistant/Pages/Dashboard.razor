@@ -1,27 +1,33 @@
 ﻿@page "/Dashboard"
+
 <AuthorizeView>
 @inject IDbContextFactory<MedAstDBContext> dbFactory;
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
+@inject IMapper mapper
 
 <div class="parent">
        <h1 class="title">Dashboard</h1>
       <div class="top-left">box for user details upper left side </div>
     
         <div class="bottom-left">
-            <PrescriptionsSmallComponent Prescriptions="@Account.Prescriptions" />
+            <PrescriptionsSmallComponent Prescriptions="@HomeDash.Prescriptions" />
    </div>
         <div class="bottom-right">
-            <PrescriptionAlertSmallComponent MedicationAlerts="@Account.Alerts" />
+            <PrescriptionAlertSmallComponent Alerts="@HomeDash.Alerts" />
         </div>
 </div>
 </AuthorizeView>
 @code {
     [Parameter]
-
-    public Account Account { get; set; } = new Account();
+    public HomeViewModel HomeDash { get; set; }
+  
     protected override async Task OnInitializedAsync()
     {
-        Account = await new AccountRepository(dbFactory,AuthenticationStateProvider).FindAccount();
+       HomeDash = new HomeViewModel(dbFactory,mapper);
+       await HomeDash.GetLists(UserHelper.GetUserId(AuthenticationStateProvider));
+       StateHasChanged();
     }
 }
+
+
+@*1e3ed9ff-4e8f-47de-bb1a-e7ee3d5c2473*@

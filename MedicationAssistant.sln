@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant", "Medi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.Tests", "MedicationAssistant.Tests\MedicationAssistant.Tests.csproj", "{8EBED63E-089B-408F-8352-BE7AA7D6BDBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.DAL", "MedicationAssistant.DAL\MedicationAssistant.DAL.csproj", "{CFC22160-5322-4CD3-A713-13FD6561F786}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.DAL", "MedicationAssistant.DAL\MedicationAssistant.DAL.csproj", "{CFC22160-5322-4CD3-A713-13FD6561F786}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.ServiceLayer", "MedicationAssistant.ServiceLayer\MedicationAssistant.ServiceLayer.csproj", "{0DE97FF6-88D3-4A30-96A6-8A8BD7C8E2AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.ServiceLayer", "MedicationAssistant.ServiceLayer\MedicationAssistant.ServiceLayer.csproj", "{0DE97FF6-88D3-4A30-96A6-8A8BD7C8E2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicationAssistant.Shared", "MedicationAssistant.Shared\MedicationAssistant.Shared.csproj", "{E0A3A460-C397-44D5-8442-5552FFFFB5B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicationAssistant.Common", "MedicationAssistant.Shared\MedicationAssistant.Common.csproj", "{E0A3A460-C397-44D5-8442-5552FFFFB5B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

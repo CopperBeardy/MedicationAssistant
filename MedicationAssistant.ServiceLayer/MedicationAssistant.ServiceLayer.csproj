@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MedicationAssistant.DAL\MedicationAssistant.DAL.csproj" />
-    <ProjectReference Include="..\MedicationAssistant.Shared\MedicationAssistant.Shared.csproj" />
+    <ProjectReference Include="..\MedicationAssistant.Shared\MedicationAssistant.Common.csproj" />
   </ItemGroup>
 
 </Project>

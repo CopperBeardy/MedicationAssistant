@@ -1,9 +1,9 @@
-﻿using MedicationAssistant.Shared.Enums;
+﻿using MedicationAssistant.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace MedicationAssistant.ServiceLayer.Models
+namespace MedicationAssistant.ViewModels
 {
-    public class MedicationDashboardModel
+    public class MedicationViewModel
     {
 
         public int MedicationModelId { get; set; }

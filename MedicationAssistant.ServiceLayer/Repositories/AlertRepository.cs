@@ -17,7 +17,6 @@ namespace MedicationAssistant.ServiceLayer.Repositories
 
         }
 
-
         public async Task<IEnumerable<Alert>> GetAllAlertsAsync()
         {
 

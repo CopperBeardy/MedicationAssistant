@@ -1,4 +1,4 @@
-﻿namespace MedicationAssistant.Shared.Enums
+﻿namespace MedicationAssistant.Common.Enums
 {
     public enum Frequency
     {

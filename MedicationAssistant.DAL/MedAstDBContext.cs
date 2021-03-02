@@ -7,10 +7,9 @@ namespace MedicationAssistant.DAL
 {
     public class MedAstDBContext : DbContext
     {
-        public MedAstDBContext(DbContextOptionsBuilder<MedAstDBContext> options)
+        public MedAstDBContext(DbContextOptions<MedAstDBContext> options) :base(options)
         {
-            options.UseSqlServer(@"Server=(localdb)\\mssqllocaldb;Database=MedicationAssistant2;Trusted_Connection=True;MultipleActiveResultSets=true");
-
+           
             Debug.WriteLine($"{ContextId} context created");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

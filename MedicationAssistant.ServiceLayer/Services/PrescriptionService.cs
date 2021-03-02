@@ -25,14 +25,14 @@ namespace MedicationAssistant.ServiceLayer.Repositories
         {
             using var context = contextFactory.CreateDbContext();
             return await new PrescriptionRepository(context)
-                .GetPrescriptionByIdWithMedicationsAsync(prescriptionId);
+                .GetPrescriptionByIdAsync(prescriptionId);
         }
 
         public async Task<IEnumerable<Prescription>> GetRequiredAmountFullPrescriptions(string userId, int count)
         {
             using var context = contextFactory.CreateDbContext();
             return await new PrescriptionRepository(context)
-                .GetRequiredAmountOfPrescriptionsWithMedicationsForUserAsync(userId, count);
+                .GetRequiredAmountOfPrescriptionsAsync(userId, count);
         }
         public void RemovePrescription(Prescription Prescription)
         {

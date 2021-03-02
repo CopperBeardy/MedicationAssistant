@@ -1,6 +1,6 @@
-﻿using MedicationAssistant.DAL;
+﻿using MedicationAssistant.Common.Enums;
+using MedicationAssistant.DAL;
 using MedicationAssistant.DAL.Entities;
-using MedicationAssistant.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;

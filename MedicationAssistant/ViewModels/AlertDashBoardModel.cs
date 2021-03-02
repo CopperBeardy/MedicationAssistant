@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MedicationAssistant.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MedicationAssistant.ServiceLayer.Models
+namespace MedicationAssistant.ViewModels
 {
     public class AlertDashBoardModel
     {
@@ -12,7 +13,7 @@ namespace MedicationAssistant.ServiceLayer.Models
         public string Title => $"Prescription to be take at - {Time.ToShortDateString()} ";
 
         [Required]
-        public HomeDashBoardModel Account { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd:MM:yy}"),]
@@ -22,7 +23,7 @@ namespace MedicationAssistant.ServiceLayer.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{hh:mm}")]
         public DateTime Time { get; set; } = new DateTime();
 
-        public IEnumerable<MedicationDashboardModel> Medications { get; set; }
+        public IEnumerable<MedicationViewModel> Medications { get; set; }
 
 
 

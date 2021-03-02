@@ -1,15 +1,8 @@
-﻿@page "/prescriptions"
+﻿@*page "/prescriptions"
 
 
 <h3>Prescriptions </h3>
 
-@*<DxListBox Data="@Prescriptions"
-TextFieldName="@nameof(Prescription.CollectedOn)"
-ValueFieldName="@nameof(Prescription.PrescriptionItems)"
-SelectionMode="ListBoxSelectionMode.Single"
-@bind-Values="@Values">
-   
-</DxListBox>*@
 
 <DxDataGrid Data="@Prescriptions"
             RowRemovingAsync="@((dataItem) => OnRowRemoving(dataItem))"
@@ -25,4 +18,4 @@ SelectionMode="ListBoxSelectionMode.Single"
      
       
    
-</DxDataGrid>
+</DxDataGrid>*@

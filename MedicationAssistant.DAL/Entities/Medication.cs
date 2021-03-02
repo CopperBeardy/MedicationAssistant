@@ -1,5 +1,4 @@
-﻿
-using MedicationAssistant.Shared.Enums;
+﻿using MedicationAssistant.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,6 +30,9 @@ namespace MedicationAssistant.DAL.Entities
 
         [Required]
         public MedicineDetails MedicineDetails { get; set; }
+
+        [ForeignKey(nameof(MedicineDetails))]
+        public int MedicineDetailsId { get; set; }
 
         [Timestamp]
         public byte[] TimeStamp { get; set; }
