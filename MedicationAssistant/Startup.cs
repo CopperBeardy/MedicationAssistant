@@ -39,7 +39,6 @@ namespace MedicationAssistant
                   
             services.AddHttpContextAccessor();
 
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

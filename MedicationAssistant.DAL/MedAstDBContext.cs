@@ -14,13 +14,13 @@ namespace MedicationAssistant.DAL
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Medication> Medications { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
-        public DbSet<MedicineDetails> MedicineDetails { get; set; }
+        public DbSet<MedicineDetail> MedicineDetails { get; set; }
         public DbSet<Alert> Alerts { get; set; }
 
 

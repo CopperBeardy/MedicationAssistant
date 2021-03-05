@@ -20,7 +20,7 @@ namespace MedicationAssistant.ServiceLayer.Profiles
 
 
             CreateMap<Medication, MedicationFullDetail>();
-            CreateMap<MedicineDetails, CurrentMedicationDetails>();
+            CreateMap<MedicineDetail, CurrentMedicationDetails>();
              
 
 

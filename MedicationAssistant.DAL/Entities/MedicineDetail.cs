@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedicationAssistant.DAL.Entities
 {
-    public class MedicineDetails
+    public class MedicineDetail
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MedicineDetailsId { get; set; }
+        public int MedicineDetailId { get; set; }
 
         [Required]
         [StringLength(250, ErrorMessage = "The usage of the medication needs to be between 25 - 250 characters", MinimumLength = 5)]

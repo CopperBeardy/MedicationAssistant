@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MedicationAssistant.DAL.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,7 +27,7 @@ namespace MedicationAssistant.DAL.Migrations
                 name: "MedicineDetails",
                 columns: table => new
                 {
-                    MedicineDetailsId = table.Column<int>(type: "int", nullable: false)
+                    MedicineDetailId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UseDirections = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     MedicalName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -35,7 +35,7 @@ namespace MedicationAssistant.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MedicineDetails", x => x.MedicineDetailsId);
+                    table.PrimaryKey("PK_MedicineDetails", x => x.MedicineDetailId);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,7 +82,7 @@ namespace MedicationAssistant.DAL.Migrations
                         name: "FK_Medications_MedicineDetails_MedicineDetailsId",
                         column: x => x.MedicineDetailsId,
                         principalTable: "MedicineDetails",
-                        principalColumn: "MedicineDetailsId",
+                        principalColumn: "MedicineDetailId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Medications_Prescriptions_PrescriptionId",

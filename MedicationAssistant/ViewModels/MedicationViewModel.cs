@@ -51,7 +51,7 @@ namespace MedicationAssistant.ViewModels
                 List<MedicationFullDetail> meds = new();
                 foreach (var pre in result)
                 {
-                    meds.AddRange(pre.Medications.Select(med => _mapper.Map<MedicationFullDetail>(med)).Distinct());
+                    meds.AddRange(pre.Medications.Select(med => MedicationFullDetail.FromMedication(med,_mapper)).Distinct());
                 }
                 MedicationFullDetails = meds;
                

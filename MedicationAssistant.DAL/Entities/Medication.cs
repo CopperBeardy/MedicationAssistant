@@ -29,7 +29,7 @@ namespace MedicationAssistant.DAL.Entities
         public Frequency Frequency { get; set; }
 
         [Required]
-        public MedicineDetails MedicineDetails { get; set; }
+        public MedicineDetail MedicineDetails { get; set; }
 
         [ForeignKey(nameof(MedicineDetails))]
         public int MedicineDetailsId { get; set; }

@@ -98,9 +98,9 @@ namespace MedicationAssistant.DAL.Migrations
                     b.ToTable("Medications");
                 });
 
-            modelBuilder.Entity("MedicationAssistant.DAL.Entities.MedicineDetails", b =>
+            modelBuilder.Entity("MedicationAssistant.DAL.Entities.MedicineDetail", b =>
                 {
-                    b.Property<int>("MedicineDetailsId")
+                    b.Property<int>("MedicineDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -120,7 +120,7 @@ namespace MedicationAssistant.DAL.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.HasKey("MedicineDetailsId");
+                    b.HasKey("MedicineDetailId");
 
                     b.ToTable("MedicineDetails");
                 });
@@ -150,7 +150,7 @@ namespace MedicationAssistant.DAL.Migrations
                         .WithMany("Medications")
                         .HasForeignKey("AlertId");
 
-                    b.HasOne("MedicationAssistant.DAL.Entities.MedicineDetails", "MedicineDetails")
+                    b.HasOne("MedicationAssistant.DAL.Entities.MedicineDetail", "MedicineDetails")
                         .WithMany()
                         .HasForeignKey("MedicineDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)

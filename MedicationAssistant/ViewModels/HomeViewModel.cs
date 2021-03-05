@@ -26,7 +26,7 @@ namespace MedicationAssistant.ViewModels
         {
             _mapper = mapper;
             _dbFactory = dbFactory;
-        }
+         }
         public IEnumerable<PrescriptionDateCount> Prescriptions { get; set; }
         public IEnumerable<AlertTimeCount> Alerts { get; set; }
 
@@ -37,8 +37,8 @@ namespace MedicationAssistant.ViewModels
             {
                 _prescriptionRepository = new PrescriptionRepository(context);
                 _alertRepository = new AlertRepository(context);
-                Prescriptions = _mapper.Map<IReadOnlyCollection<PrescriptionDateCount>>((await _prescriptionRepository.GetRequiredAmountOfPrescriptionsAsync(userId, 5)));
-                Alerts = _mapper.Map<IReadOnlyCollection<AlertTimeCount>>((await _alertRepository.GetRequiredAmountOfAlertsForIdAsync(userId, 5)));
+                Prescriptions = PrescriptionDateCount.FromPrescriptions((await _prescriptionRepository.GetRequiredAmountOfPrescriptionsAsync(userId, 5)),_mapper);
+                Alerts = AlertTimeCount.FromAlerts((await _alertRepository.GetRequiredAmountOfAlertsForIdAsync(userId, 5)),_mapper);
                 
             }
         }

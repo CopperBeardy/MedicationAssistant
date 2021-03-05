@@ -1,9 +1,8 @@
-﻿using System;
+﻿using AutoMapper;
+using MedicationAssistant.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MedicationAssistant.ServiceLayer.DTOs
 {
@@ -15,5 +14,8 @@ namespace MedicationAssistant.ServiceLayer.DTOs
         public DateTime CollectedOn { get; private set; }
 
         public int NumberOfMedications { get; private set; }
+
+        public static IReadOnlyCollection<PrescriptionDateCount> FromPrescriptions(IEnumerable<Prescription> prescriptions, IMapper mapper) =>
+           mapper.Map<IReadOnlyCollection<PrescriptionDateCount>>(prescriptions);
     }
 }
