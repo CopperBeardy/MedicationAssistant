@@ -31,8 +31,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
             }
         }
 
-
-        public async Task<Medication> GetMedicationByIdWithDetailsAsync(int medicationId)
+          public async Task<Medication> GetMedicationByIdWithDetailsAsync(int medicationId)
         {
             try
             {
@@ -74,6 +73,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
         {
             try
             {
+                
                 Delete(Medication);
             }
             catch (Exception ex)

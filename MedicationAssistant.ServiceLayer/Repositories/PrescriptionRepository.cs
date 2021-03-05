@@ -47,11 +47,13 @@ namespace MedicationAssistant.ServiceLayer.Repositories
         {
             try
             {
-                return await FindByCondition(prescription => prescription.UserId.Equals(userId))
+               var x = await FindByCondition(prescription => prescription.UserId.Equals(userId))
                     .OrderByDescending(x => x.CollectedOn)
                     .Include(m => m.Medications)
                     .ThenInclude(d => d.MedicineDetails)
                     .ToListAsync();
+
+                return x;
             }
             catch (Exception ex)
             {

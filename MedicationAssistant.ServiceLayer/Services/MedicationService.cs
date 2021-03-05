@@ -22,27 +22,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
             return await new MedicationRepository(context).FindAll().ToListAsync();
         }
 
-        public void RemoveMedication(Medication Medication)
-        {
-            using var context = contextFactory.CreateDbContext();
-            new MedicationRepository(context).DeleteMedication(Medication);
-            context.SaveChanges();
-        }
-
-        public void UpdateMedication(Medication Medication, Dictionary<string, object> newValues)
-        {
-            using var context = contextFactory.CreateDbContext();
-            new MedicationRepository(context).UpdateMedication(SetValues(Medication, newValues));
-            context.SaveChanges();
-        }
-
-        public void InsertMedication(Dictionary<string, object> values)
-        {
-            using var context = contextFactory.CreateDbContext();
-            new MedicationRepository(context).Create(SetValues(new(), values));
-            context.SaveChanges();
-
-        }
+        
 
         private static Medication SetValues(Medication med, Dictionary<string, object> newValues)
         {

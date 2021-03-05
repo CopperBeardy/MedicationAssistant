@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace MedicationAssistant.ServiceLayer.DTOs
 {
-    public  class AlertTimeCount
+    public class AlertTimeCount
     {
 
         public  int AlertId { get; private set; }
 
-
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{hh:mm}")]
+        [DisplayFormat( DataFormatString = "{hh:mm}")]
         public   DateTime Time { get; private set; }
 
         public int NumberOfMedications { get; private set; }

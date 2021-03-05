@@ -26,8 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MedicationAssistant.Common\MedicationAssistant.Common.csproj" />
     <ProjectReference Include="..\MedicationAssistant.ServiceLayer\MedicationAssistant.ServiceLayer.csproj" />
-    <ProjectReference Include="..\MedicationAssistant.Shared\MedicationAssistant.Common.csproj" />
+ 
   </ItemGroup>
 
 </Project>

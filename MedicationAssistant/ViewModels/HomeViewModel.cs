@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using MedicationAssistant.DAL;
-using MedicationAssistant.DAL.Entities;
 using MedicationAssistant.ServiceLayer.DTOs;
 using MedicationAssistant.ServiceLayer.Repositories;
 using MedicationAssistant.ServiceLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -22,12 +20,12 @@ namespace MedicationAssistant.ViewModels
         IAlertRepository _alertRepository { get; set; }
         [Inject]
         IDbContextFactory<MedAstDBContext> _dbFactory { get; set; }
+
+       
         public HomeViewModel(IDbContextFactory<MedAstDBContext> dbFactory,IMapper mapper)
         {
             _mapper = mapper;
             _dbFactory = dbFactory;
-          
-          
         }
         public IEnumerable<PrescriptionDateCount> Prescriptions { get; set; }
         public IEnumerable<AlertTimeCount> Alerts { get; set; }

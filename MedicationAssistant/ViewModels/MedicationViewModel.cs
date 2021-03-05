@@ -1,37 +1,78 @@
-﻿using MedicationAssistant.Common.Enums;
+﻿using AutoMapper;
+using MedicationAssistant.Common.Enums;
+using MedicationAssistant.DAL;
+using MedicationAssistant.ServiceLayer.Convertor;
+using MedicationAssistant.ServiceLayer.DTOs;
+using MedicationAssistant.ServiceLayer.Repositories;
+using MedicationAssistant.ServiceLayer.Repositories.Interfaces;
+using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MedicationAssistant.ViewModels
 {
     public class MedicationViewModel
     {
 
-        public int MedicationModelId { get; set; }
+        IMapper _mapper;
+        [Inject]
+        IMedicationRepository _medicationRepository { get; set; }
+        [Inject]
+        IPrescriptionRepository _prescriptionRepository { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The Name of the medication needs to be between 5 - 100 characters", MinimumLength = 5)]
-        public string Name { get; set; }
+        [Inject]
+        IDbContextFactory<MedAstDBContext> _dbFactory { get; set; }
 
-        [Required]
-        public int Quantity { get; set; }
+        public IEnumerable<string> _dosageUnit;
+        public IEnumerable<string> _frequency;
+        public readonly string _userId;
+        public List<MedicationFullDetail> MedicationFullDetails { get; set; } 
 
-        [Required]
-        public int Dosage { get; set; } = 0;
+        public MedicationViewModel(IDbContextFactory<MedAstDBContext> dbFactory,IMapper mapper, string userId)
+        {
+            _mapper = mapper;
+            _dbFactory = dbFactory;
+            _userId = userId;
+            _dosageUnit = EnumValueConvertor.DosageUnits;
+            _frequency = EnumValueConvertor.FrequencyUnits;
+           
+        }
 
-        [Required]
-        public DosageUnit DosageUnit { get; set; }
+        public async Task LoadData() 
+        {
+            
+            using (var context = _dbFactory.CreateDbContext())
+            {
+                _prescriptionRepository = new PrescriptionRepository(context);
+                var result = await _prescriptionRepository.GetPrescriptionsForUserAsync(_userId);
+                List<MedicationFullDetail> meds = new();
+                foreach (var pre in result)
+                {
+                    meds.AddRange(pre.Medications.Select(med => _mapper.Map<MedicationFullDetail>(med)).Distinct());
+                }
+                MedicationFullDetails = meds;
+               
+            }
+        }
+        
 
-        [Required]
-        public double FrequencyUnit { get; set; }
+        public async Task OnRowUpdating(MedicationFullDetail Medication, Dictionary<string, object> newValues)
+        {
+            var x = 1;
+            //await MedicationService.UpdateMedication(Medication, newValues);
+        }
 
-        [Required]
-        public Frequency Frequency { get; set; }
+        public async Task OnRowInserting(Dictionary<string, object> values)
+        {
+            //await MedicationService.InsertMedication(values);
+            //Medications = await MedicationService.GetMedications();
+            //_ = InvokeAsync(StateHasChanged);
+        }
 
-        [StringLength(250, ErrorMessage = "The usage of the medication needs to be between 25 - 250 characters", MinimumLength = 5)]
-        public string UseDirections { get; set; }
-
-        [Timestamp]
-        public byte[] TimeStamp { get; set; }
+      
 
 
     }

@@ -11,7 +11,7 @@ namespace MedicationAssistant.ServiceLayer.DTOs
     {
         public int PrescriptionId { get; private set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd:MM:yy}")]
+        [DisplayFormat(DataFormatString = "{dd:MM:yy}")]
         public DateTime CollectedOn { get; private set; }
 
         public int NumberOfMedications { get; private set; }
