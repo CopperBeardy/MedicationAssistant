@@ -7,22 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-   <PackageReference Include="DevExpress.Blazor" Version="20.2.5" />
+    <Content Remove="Pages\sample.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
   
-   <PackageReference Include="Microsoft.Identity.Web" Version="1.5.1" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.5.1" />
+   <PackageReference Include="DevExpress.Blazor" Version="20.2.5" />
+ 
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.6.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.1.21102.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.1.21102.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-preview.1.21102.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MedicationAssistant.Data\MedicationAssistant.Data.csproj" />
-    <ProjectReference Include="..\MedicationAssistant.Shared\MedicationAssistant.Shared.csproj" />
+    <ProjectReference Include="..\MedicationAssistant.Common\MedicationAssistant.Common.csproj" />
+    <ProjectReference Include="..\MedicationAssistant.ServiceLayer\MedicationAssistant.ServiceLayer.csproj" />
+ 
   </ItemGroup>
 
 </Project>

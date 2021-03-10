@@ -1,56 +1,53 @@
-﻿using MedicationAssistant.Data;
-using MedicationAssistant.Shared.Enums;
-using MedicationAssistant.Shared.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using MedicationAssistant.DAL;
+//using Microsoft.EntityFrameworkCore;
+//using System;
 
-namespace MedicationAssistant.Tests.ServiceTests.Fixtures
-{
-    public class MedicineSeedDataFixture : IDisposable
-    {
-        public MedicationAssistantDBContext context { get; private set; } 
-        public DbContextOptions<MedicationAssistantDBContext> contextOptions { get; set;  }
-        public MedicationAssistantDBContext MakeContext() => new MedicationAssistantDBContext(contextOptions);
+//namespace MedicationAssistant.Tests.ServiceTests.Fixtures
+//{
+//    public class MedicineSeedDataFixture : IDisposable
+//    {
+//        public MedAstDBContext context { get; private set; }
+//        public DbContextOptions<MedAstDBContext> contextOptions { get; set; }
+//        public MedAstDBContext MakeContext()
+//        {
+//            return new MedAstDBContext(contextOptions);
+//        }
 
-        public MedicineSeedDataFixture()
-        {
+//        public MedicineSeedDataFixture()
+//        {
 
-            contextOptions = new DbContextOptionsBuilder<MedicationAssistantDBContext>()
-                     .UseInMemoryDatabase(databaseName:  Guid.NewGuid().ToString())
-                    .Options;
+//            contextOptions = new DbContextOptionsBuilder<MedAstDBContext>()
+//                     .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+//                    .Options;
 
-            context = new MedicationAssistantDBContext(contextOptions);
+//            context = new MedAstDBContext(contextOptions);
 
-            context.Medicines.Add( new Medicine()
-            {
-                Name = "Sample Med",
-                Description = "Sample of a medicine",
-                Dosage = 20,
-                DosageUnit = DosageUnit.g,
-                UseDirections = "use as sampled"
-            });
+//            //context.Medicines.Add( new Medicine()
+//            //{
+//            //    Name = "Sample Med",
+//            //    Description = "Sample of a medicine",
+//            //    Dosage = 20,
+//            //    DosageUnit = DosageUnit.g,
+//            //    UseDirections = "use as sampled"
+//            //});
 
-            context.Medicines.Add(new Medicine()
-            {
-                Name = "Sample Med Number 2",
-                Description = "Sample of a medicine Number 2",
-                Dosage = 5,
-                DosageUnit = DosageUnit.mg,
-                UseDirections = "use as sample instructs"
-            });
+//            //context.Medicines.Add(new Medicine()
+//            //{
+//            //    Name = "Sample Med Number 2",
+//            //    Description = "Sample of a medicine Number 2",
+//            //    Dosage = 5,
+//            //    DosageUnit = DosageUnit.mg,
+//            //    UseDirections = "use as sample instructs"
+//            //});
 
-            context.SaveChangesAsync();
-        }
+//            context.SaveChangesAsync();
+//        }
 
-        public void Dispose()
-        {
-            context.Database.EnsureDeleted();
-            context.Dispose();            
-        }
+//        public void Dispose()
+//        {
+//            context.Database.EnsureDeleted();
+//            context.Dispose();
+//        }
 
-    }
-}
+//    }
+//}
