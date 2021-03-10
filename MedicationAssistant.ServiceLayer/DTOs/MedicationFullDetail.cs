@@ -43,13 +43,9 @@ namespace MedicationAssistant.ServiceLayer.DTOs
         [Timestamp]
         public byte[] TimeStamp { get; set; }
 
-        public static MedicationFullDetail FromMedication(Medication medicaton, IMapper mapper)
-        {
-            return mapper.Map<MedicationFullDetail>(medicaton);
-        }
-        public static Medication  FromMedicationFullDetail(MedicationFullDetail mfd, IMapper mapper)
-        {
-            return mapper.Map<Medication>(mfd);
-        }
+        public static MedicationFullDetail FromMedication(Medication medicaton, IMapper mapper)=> mapper.Map<MedicationFullDetail>(medicaton);
+        
+        public static Medication  FromMedicationFullDetail(MedicationFullDetail mfd, IMapper mapper)=> mapper.Map<Medication>(mfd);
+        
     }
 }
