@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MedicationAssistant.Common.Enums;
 using MedicationAssistant.DAL;
 using MedicationAssistant.ServiceLayer.Convertor;
 using MedicationAssistant.ServiceLayer.DTOs;
@@ -8,30 +7,30 @@ using MedicationAssistant.ServiceLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicationAssistant.ViewModels
 {
-    public class MedicationViewModel
+    public class MedicationViewModel 
     {
 
         IMapper _mapper;
+     
         [Inject]
         IMedicationRepository _medicationRepository { get; set; }
-        [Inject]
-        IPrescriptionRepository _prescriptionRepository { get; set; }
 
-        [Inject]
+        
         IDbContextFactory<MedAstDBContext> _dbFactory { get; set; }
 
         public IEnumerable<string> _dosageUnit;
         public IEnumerable<string> _frequency;
         public readonly string _userId;
+
+        
         public List<MedicationFullDetail> MedicationFullDetails { get; set; } 
 
-        public MedicationViewModel(IDbContextFactory<MedAstDBContext> dbFactory,IMapper mapper, string userId)
+        public MedicationViewModel(IDbContextFactory<MedAstDBContext> dbFactory,string userId,IMapper mapper)
         {
             _mapper = mapper;
             _dbFactory = dbFactory;
@@ -46,12 +45,12 @@ namespace MedicationAssistant.ViewModels
             
             using (var context = _dbFactory.CreateDbContext())
             {
-                _prescriptionRepository = new PrescriptionRepository(context);
-                var result = await _prescriptionRepository.GetPrescriptionsForUserAsync(_userId);
+                _medicationRepository = new MedicationRepository(context);
+                var result = await _medicationRepository.GetAllMedicationsForUser(_userId);
                 List<MedicationFullDetail> meds = new();
                 foreach (var pre in result)
                 {
-                    meds.AddRange(pre.Medications.Select(med => MedicationFullDetail.FromMedication(med,_mapper)).Distinct());
+                    meds.Add( MedicationFullDetail.FromMedication(pre,_mapper));
                 }
                 MedicationFullDetails = meds;
                
@@ -59,21 +58,34 @@ namespace MedicationAssistant.ViewModels
         }
         
 
-        public async Task OnRowUpdating(MedicationFullDetail Medication, Dictionary<string, object> newValues)
+
+        public void Updating(MedicationFullDetail Medication, Dictionary<string, object> newValues)
         {
-            var x = 1;
-            //await MedicationService.UpdateMedication(Medication, newValues);
+            using (var context = _dbFactory.CreateDbContext())
+            {
+              
+                var item = MedicationService.SetValues(
+                        MedicationFullDetail.FromMedicationFullDetail(Medication, _mapper), newValues);
+         
+                 new MedicationRepository(context).UpdateMedication(item );
+                  context.SaveChanges();
+           }
+            
         }
 
-        public async Task OnRowInserting(Dictionary<string, object> values)
+        public void Inserting(Dictionary<string, object> values)
         {
+            using (var context = _dbFactory.CreateDbContext())
+            {
+                values.Add("UserId", _userId);
+                var item = MedicationService.SetValues(new(), values);
+
+                new MedicationRepository(context).CreateMedication(item);
+                context.SaveChanges();
+            }
             //await MedicationService.InsertMedication(values);
             //Medications = await MedicationService.GetMedications();
             //_ = InvokeAsync(StateHasChanged);
         }
-
-      
-
-
     }
 }

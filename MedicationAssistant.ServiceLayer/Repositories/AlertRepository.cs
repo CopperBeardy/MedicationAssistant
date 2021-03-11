@@ -36,7 +36,6 @@ namespace MedicationAssistant.ServiceLayer.Repositories
                 return await FindByCondition(alerts => alerts.UserId.Equals(userId))
                     .OrderByDescending(a => a.Time)
                     .Include(x => x.Medications)
-                    .ThenInclude(x => x.MedicineDetails)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -52,8 +51,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
                 return await FindByCondition(alerts => alerts.UserId.Equals(userId))
                     .OrderByDescending(a => a.Time)
                     .Take(count)
-                    .Include(x => x.Medications)
-                    .ThenInclude(x => x.MedicineDetails)
+                    .Include(x => x.Medications)                   
                     .ToListAsync();
             }
             catch (Exception ex)

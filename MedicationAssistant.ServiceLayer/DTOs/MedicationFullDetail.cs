@@ -19,6 +19,10 @@ namespace MedicationAssistant.ServiceLayer.DTOs
         [StringLength(100, ErrorMessage = "The Name of the medication needs to be between 5 - 100 characters", MinimumLength = 5)]
         public string Name { get; set; }
 
+        
+        public  string UserId { get; private set; }
+
+
         [Required]
         public int Quantity { get; set; }
 
@@ -34,18 +38,16 @@ namespace MedicationAssistant.ServiceLayer.DTOs
         [Required]
         public Frequency Frequency { get; set; }
 
-        [Required]
-        public CurrentMedicationDetails MedicineDetails { get; set; }
+        public string UseDirections { get; set; }
 
-        [ForeignKey(nameof(MedicineDetails))]
-        public int MedicineDetailId { get; set; }
-   
         [Timestamp]
         public byte[] TimeStamp { get; set; }
 
-        public static MedicationFullDetail FromMedication(Medication medicaton, IMapper mapper)=> mapper.Map<MedicationFullDetail>(medicaton);
+        public static MedicationFullDetail FromMedication(Medication medicaton, IMapper mapper)
+            => mapper.Map<MedicationFullDetail>(medicaton);
         
-        public static Medication  FromMedicationFullDetail(MedicationFullDetail mfd, IMapper mapper)=> mapper.Map<Medication>(mfd);
+        public static Medication  FromMedicationFullDetail(MedicationFullDetail mfd, IMapper mapper)
+            => mapper.Map<Medication>(mfd);
         
     }
 }

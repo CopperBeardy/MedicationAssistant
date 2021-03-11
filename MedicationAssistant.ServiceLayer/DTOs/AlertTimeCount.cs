@@ -14,8 +14,8 @@ namespace MedicationAssistant.ServiceLayer.DTOs
 
         public  int AlertId { get; private set; }
 
-        [DisplayFormat( DataFormatString = "{hh:mm}")]
-        public   DateTime Time { get; private set; }
+        [DisplayFormat(DataFormatString = "hh:mm")]
+        public DateTime Time { get; private set; }
 
         public int NumberOfMedications { get; private set; }
 

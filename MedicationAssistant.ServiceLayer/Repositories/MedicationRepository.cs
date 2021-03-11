@@ -21,13 +21,24 @@ namespace MedicationAssistant.ServiceLayer.Repositories
         {
             try
             {
-                return await FindAll()
-                    .Include(d => d.MedicineDetails)
-                    .ToListAsync();
+                return await FindAll() .ToListAsync();
             }
             catch (Exception ex)
             {
                 throw new Exception("could not retrieve Medications ", ex);
+            }
+        }
+        public async Task<IEnumerable<Medication>> GetAllMedicationsForUser(string user)
+        {
+            try
+            {
+                return await FindByCondition(med => med.UserId.Equals(user)).ToListAsync();
+
+            }
+            catch (Exception ex )
+            {
+
+                throw new Exception($"unable to retrieve medications for user{user}", ex);
             }
         }
 
@@ -36,8 +47,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
             try
             {
                 return await FindByCondition(med => med.MedicationId.Equals(medicationId))
-                    .Include(m => m.MedicineDetails)
-                    .FirstOrDefaultAsync();
+                     .FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {

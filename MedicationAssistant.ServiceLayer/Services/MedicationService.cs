@@ -8,28 +8,17 @@ using System.Threading.Tasks;
 
 namespace MedicationAssistant.ServiceLayer.Repositories
 {
-    public class MedicationService
+    public static class MedicationService
     {
-        private readonly IDbContextFactory<MedAstDBContext> contextFactory;
-        public MedicationService(IDbContextFactory<MedAstDBContext> contextFactory)
-        {
-            this.contextFactory = contextFactory;
-        }
-
-        public async Task<IEnumerable<Medication>> GetMedications()
-        {
-            using var context = contextFactory.CreateDbContext();
-            return await new MedicationRepository(context).FindAll().ToListAsync();
-        }
-
-        
-
-        private static Medication SetValues(Medication med, Dictionary<string, object> newValues)
+        public static Medication SetValues(Medication med, Dictionary<string, object> newValues)
         {
             foreach (var item in newValues.Keys)
             {
                 switch (item)
                 {
+                    case "UserId":
+                        med.UserId = (string)newValues[item];
+                        break;
                     case "Name":
                         med.Name = (string)newValues[item];
                         break;
@@ -49,7 +38,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
                         med.FrequencyUnit = (double)newValues[item];
                         break;
                     case "UseDirections":
-                        med.MedicineDetails.UseDirections = (string)newValues[item];
+                        med.UseDirections = (string)newValues[item];
                         break;
                 }
             }

@@ -19,8 +19,8 @@ namespace MedicationAssistant.ServiceLayer.Profiles
                             opt => opt.MapFrom(src => src.Medications.Count()));
 
 
-            CreateMap<Medication, MedicationFullDetail>();
-            CreateMap<MedicineDetail, CurrentMedicationDetails>();
+            CreateMap<Medication, MedicationFullDetail>().ReverseMap();
+         
              
 
 

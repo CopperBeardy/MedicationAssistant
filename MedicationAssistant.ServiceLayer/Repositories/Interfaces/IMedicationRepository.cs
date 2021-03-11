@@ -12,5 +12,6 @@ namespace MedicationAssistant.ServiceLayer.Repositories.Interfaces
         void CreateMedication(Medication Medication);
         void UpdateMedication(Medication Medication);
         void DeleteMedication(Medication Medication);
+        Task<IEnumerable<Medication>> GetAllMedicationsForUser(string user);
     }
 }

@@ -1,7 +1,7 @@
 ﻿@page "/Medications"
 
 <h3>Medications</h3>
-
+@*Todo - shgow load ing icon whilst data is being fetched*@
 @if(MedicationDash == null)
 {
     
@@ -10,8 +10,8 @@ else
 {
 <DxDataGrid Data="@MedicationDash.MedicationFullDetails"
             ShowFilterRow="true"
-            RowUpdatingAsync="@((updatingDataItem, newValues) => MedicationDash.OnRowUpdating(updatingDataItem, (Dictionary<string,object>)newValues))"
-            RowInsertingAsync="@((newValues) => MedicationDash.OnRowInserting((Dictionary<string,object>)newValues))"
+            RowUpdatingAsync="@((updatingDataItem, newValues) => OnRowUpdating(updatingDataItem, (Dictionary<string,object>)newValues))"
+            RowInsertingAsync="@((newValues) => OnRowInserting((Dictionary<string,object>)newValues))"
             InitNewRow="OnInitNewRow"
             ShowPager="true"
             PagerPageSizeSelectorVisible="true"
@@ -20,7 +20,7 @@ else
             PagerNavigationMode=PagerNavigationMode.InputBox
             CssClass="mw-1100">
 
-    <DxDataGridCommandColumn Width="150px" />
+    <DxDataGridCommandColumn Width="150px"  DeleteButtonVisible="false"/>
     <DxDataGridColumn AllowFilter="true" Field="@nameof(MedicationFullDetail.Name)"/>
     <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Dosage)" Width="100px" />
    <DxDataGridComboBoxColumn Data="@MedicationDash._dosageUnit" Field="@nameof(MedicationFullDetail.DosageUnit)" Width="150px">
@@ -39,7 +39,7 @@ else
         </EditTemplate>
     </DxDataGridComboBoxColumn>  
     <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Quantity)" Width="100px" />
-          <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.FrequencyUnit)" Width="100px" />
+    <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.FrequencyUnit)" Width="100px" />
     <DxDataGridComboBoxColumn Data="@MedicationDash._frequency" Field="@nameof(MedicationFullDetail.Frequency)" Width="150px">
         <EditTemplate>
             @{
@@ -55,27 +55,8 @@ else
             </DxComboBox>
         </EditTemplate>
     </DxDataGridComboBoxColumn>  
-    <DxDataGridColumn  Field="@nameof(MedicationFullDetail.MedicineDetails.UseDirections)" >
-        <EditTemplate>
-            @{
-                var editingContext = (CellEditContext)context;
-                    var value = (MedicationFullDetail)editingContext.DataItem;
-                   
-            }
-            <DxTextBox Text="@value.MedicineDetails.UseDirections" TextChanged="(newCellValue) =>
-                        {editingContext.OnChanged(newCellValue);
-                    }">
-                        
-                </DxTextBox>
-           
-
-        </EditTemplate>
-        <DisplayTemplate>
-			@{
-                var value = context as MedicationFullDetail;
-                <span>@value.MedicineDetails.UseDirections</span>
-            }
-        </DisplayTemplate>
+    <DxDataGridColumn  Field="@nameof(MedicationFullDetail.UseDirections)"   >
+        
     </DxDataGridColumn>
 </DxDataGrid>
 }

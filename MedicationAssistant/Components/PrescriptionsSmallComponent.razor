@@ -7,8 +7,7 @@
        @foreach (var prescription in Prescriptions)
        {
            <li>
-               <label>Collected on : @prescription.CollectedOn</label>               
-               <label>with @prescription.NumberOfMedications items</label>
+               <span>Collected on : @prescription.CollectedOn.ToShortDateString() with @prescription.NumberOfMedications items</span>
            </li>
        }
    </ol>

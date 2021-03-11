@@ -4,14 +4,16 @@ using MedicationAssistant.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedicationAssistant.DAL.Migrations
 {
     [DbContext(typeof(MedAstDBContext))]
-    partial class MedAstDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210311150418_add userId to mediciation")]
+    partial class adduserIdtomediciation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

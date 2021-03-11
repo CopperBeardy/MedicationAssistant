@@ -19,8 +19,7 @@ namespace MedicationAssistant.DAL
         }
 
         public DbSet<Medication> Medications { get; set; }
-        public DbSet<Prescription> Prescriptions { get; set; }
-        public DbSet<MedicineDetail> MedicineDetails { get; set; }
+        public DbSet<Prescription> Prescriptions { get; set; }    
         public DbSet<Alert> Alerts { get; set; }
 
 
