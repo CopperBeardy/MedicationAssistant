@@ -1,5 +1,6 @@
 using MedicationAssistant.DAL;
 using MedicationAssistant.ServiceLayer.Profiles;
+using MedicationAssistant.ViewModels;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,10 @@ namespace MedicationAssistant
             services.AddRazorPages();
             services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
-
+            
+            services.AddScoped<IViewModelBase, ViewModelBase>();
+            services.AddScoped<IMedicationViewModel, MedicationViewModel>();         
+            services.AddScoped<IDashboardViewModel, DashboardViewModel>();
             services.AddDbContextFactory<MedAstDBContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(AppProfile));

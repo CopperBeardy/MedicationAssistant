@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MedicationAssistant.ServiceLayer.Repositories.Interfaces
+namespace MedicationAssistant.DAL
 {
     public interface IRepositoryBase<T> where T : class
     {

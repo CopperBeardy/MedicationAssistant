@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MedicationAssistant.DAL.Entities;
-using MedicationAssistant.ServiceLayer.DTOs;
-using System.Collections.Generic;
+using MedicationAssistant.ServiceLayer.Models;
 using System.Linq;
 
 namespace MedicationAssistant.ServiceLayer.Profiles
@@ -10,20 +9,20 @@ namespace MedicationAssistant.ServiceLayer.Profiles
     {
         public AppProfile()
         {
-            CreateMap<Alert, AlertTimeCount>()
-                .ForMember(dest => dest.NumberOfMedications,
-                            opt => opt.MapFrom(src => src.Medications.Count()));
+            
+                CreateMap<Alert, AlertTimeCount>()
+                    .ForMember(dest => dest.NumberOfMedications,
+                                opt => opt.MapFrom(src => src.Medications.Count()));
 
-            CreateMap<Prescription, PrescriptionDateCount>()
-                .ForMember(dest => dest.NumberOfMedications,
-                            opt => opt.MapFrom(src => src.Medications.Count()));
-
-
-            CreateMap<Medication, MedicationFullDetail>().ReverseMap();
-         
-             
+                CreateMap<Prescription, PrescriptionDateCount>()
+                    .ForMember(dest => dest.NumberOfMedications,
+                                opt => opt.MapFrom(src => src.Medications.Count()));
 
 
+                CreateMap<Medication, MedicationFullDetail>().ReverseMap();
+
+
+           
         }
     }
 }

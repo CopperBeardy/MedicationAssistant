@@ -1,11 +1,10 @@
 ﻿using MedicationAssistant.DAL;
-using MedicationAssistant.ServiceLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MedicationAssistant.ServiceLayer.Repositories
+namespace MedicationAssistant.DAL
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
@@ -25,7 +24,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
         }
         public void Create(T entity)
         {
-            this._context.Set<T>().Add(entity);
+           this._context.Set<T>().Add(entity);
         }
         public void Update(T entity)
         {

@@ -16,12 +16,11 @@ namespace MedicationAssistant.ServiceLayer.Repositories
 
         }
 
-
         public async Task<IEnumerable<Medication>> GetAllMedicationsAsync()
         {
             try
             {
-                return await FindAll() .ToListAsync();
+                return await FindAll().ToListAsync();
             }
             catch (Exception ex)
             {
@@ -60,6 +59,7 @@ namespace MedicationAssistant.ServiceLayer.Repositories
             try
             {
                 Create(Medication);
+                
             }
             catch (Exception ex)
             {

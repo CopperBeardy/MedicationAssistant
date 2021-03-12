@@ -7,21 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedicationAssistant.ServiceLayer.DTOs
+namespace MedicationAssistant.ServiceLayer.Models
 {
     public class AlertTimeCount
     {
-
-        public  int AlertId { get; private set; }
-
-        [DisplayFormat(DataFormatString = "hh:mm")]
         public DateTime Time { get; private set; }
-
         public int NumberOfMedications { get; private set; }
 
-
-
-        public static  IReadOnlyCollection<AlertTimeCount> FromAlerts(IEnumerable<Alert> alerts, IMapper mapper) =>
-            mapper.Map<IReadOnlyCollection<AlertTimeCount>>(alerts);
     }
 }

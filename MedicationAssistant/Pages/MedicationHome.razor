@@ -1,64 +1,77 @@
 ﻿@page "/Medications"
 
+@inject IMedicationViewModel vm
+
 <h3>Medications</h3>
-@*Todo - shgow load ing icon whilst data is being fetched*@
-@if(MedicationDash == null)
+@*Todo - show load ing icon whilst data is being fetched*@
+@if (vm == null)
 {
-    
+    <span>Loading.....</span>
 }
 else
 {
-<DxDataGrid Data="@MedicationDash.MedicationFullDetails"
-            ShowFilterRow="true"
-            RowUpdatingAsync="@((updatingDataItem, newValues) => OnRowUpdating(updatingDataItem, (Dictionary<string,object>)newValues))"
-            RowInsertingAsync="@((newValues) => OnRowInserting((Dictionary<string,object>)newValues))"
-            InitNewRow="OnInitNewRow"
-            ShowPager="true"
-            PagerPageSizeSelectorVisible="true"
-            PagerAllDataRowsItemVisible="true"
-            PagerAllowedPageSizes=@(new int[] {2,10,20,40})
-            PagerNavigationMode=PagerNavigationMode.InputBox
-            CssClass="mw-1100">
+    <DxDataGrid  Data="@vm.MedicationFullDetails"
+                ShowFilterRow="true"
+                RowUpdating="@((updatingDataItem, newValues) => vm.OnRowUpdating(updatingDataItem, (Dictionary<string,object>)newValues))"
+                RowInserting="@((newValues) => vm.OnRowInserting((Dictionary<string,object>)newValues))"
+                InitNewRow="OnInitNewRow"
+                ShowPager="true"
+                PagerPageSizeSelectorVisible="true"
+                PagerAllDataRowsItemVisible="true"
+                PagerAllowedPageSizes=@(new int[] {2,10,20,40})
+                PagerNavigationMode=PagerNavigationMode.InputBox
+                CssClass="mw-1100">
 
-    <DxDataGridCommandColumn Width="150px"  DeleteButtonVisible="false"/>
-    <DxDataGridColumn AllowFilter="true" Field="@nameof(MedicationFullDetail.Name)"/>
-    <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Dosage)" Width="100px" />
-   <DxDataGridComboBoxColumn Data="@MedicationDash._dosageUnit" Field="@nameof(MedicationFullDetail.DosageUnit)" Width="150px">
-        <EditTemplate>
-            @{
-                var editingContext = (CellEditContext)context;
-                var unit = Enum.GetName(typeof(DosageUnit),(editingContext.GetEditorValue(nameof(MedicationFullDetail.DosageUnit))));
-             }            
-            <DxComboBox Data="@MedicationDash._dosageUnit"
-                        NullText ="Select DosageUnit"
-                        Value="@unit"
-                        ValueChanged="((string newCellValue) => {
+        <DxDataGridCommandColumn Width="150px" DeleteButtonVisible="false" />
+        <DxDataGridColumn AllowFilter="true" Field="@nameof(MedicationFullDetail.Name)" />
+        <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Dosage)" Width="100px" />
+        <DxDataGridComboBoxColumn Data="@vm.DosageUnit" Field="@nameof(MedicationFullDetail.DosageUnit)" Width="150px">
+            <EditTemplate>
+                @{
+                    var editingContext = (CellEditContext)context;
+                    var unit = Enum.GetName(typeof(DosageUnit), (editingContext.GetEditorValue(nameof(MedicationFullDetail.DosageUnit))));
+                }
+                <DxComboBox Data="@vm.DosageUnit"
+                            NullText="Select DosageUnit"
+                            Value="@unit"
+                            ValueChanged="((string newCellValue) => {
                                     editingContext.OnChanged((Enum.Parse(typeof(DosageUnit),newCellValue)));
-                                })">                
-            </DxComboBox>
-        </EditTemplate>
-    </DxDataGridComboBoxColumn>  
-    <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Quantity)" Width="100px" />
-    <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.FrequencyUnit)" Width="100px" />
-    <DxDataGridComboBoxColumn Data="@MedicationDash._frequency" Field="@nameof(MedicationFullDetail.Frequency)" Width="150px">
-        <EditTemplate>
-            @{
-                var editingContext = (CellEditContext)context;
-                var unit = Enum.GetName(typeof(Frequency),(editingContext.GetEditorValue(nameof(MedicationFullDetail.Frequency))));
-             }            
-            <DxComboBox Data="@MedicationDash._frequency"
-                        NullText ="Select Frequency"
-                        Value="@unit"
-                        ValueChanged="((string newCellValue) => {
+                                })">
+                </DxComboBox>
+            </EditTemplate>
+        </DxDataGridComboBoxColumn>
+        <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Quantity)" Width="100px" />
+        <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.FrequencyUnit)" Width="100px" />
+        <DxDataGridComboBoxColumn Data="@vm.Frequency" Field="@nameof(MedicationFullDetail.Frequency)" Width="150px">
+            <EditTemplate>
+                @{
+                    var editingContext = (CellEditContext)context;
+                    var unit = Enum.GetName(typeof(Frequency), (editingContext.GetEditorValue(nameof(MedicationFullDetail.Frequency))));
+                }
+                <DxComboBox Data="@vm.Frequency"
+                            NullText="Select Frequency"
+                            Value="@unit"
+                            ValueChanged="((string newCellValue) => {
                                     editingContext.OnChanged((Enum.Parse(typeof(Frequency),newCellValue)));
-                                })">                
-            </DxComboBox>
-        </EditTemplate>
-    </DxDataGridComboBoxColumn>  
-    <DxDataGridColumn  Field="@nameof(MedicationFullDetail.UseDirections)"   >
-        
-    </DxDataGridColumn>
-</DxDataGrid>
+                                })">
+                </DxComboBox>
+            </EditTemplate>
+        </DxDataGridComboBoxColumn>
+        <DxDataGridColumn Field="@nameof(MedicationFullDetail.UseDirections)">
+
+        </DxDataGridColumn>
+    </DxDataGrid>
 }
 
+@code
+{    
+    protected override async Task OnInitializedAsync() => await vm.LoadData();
 
+
+    public static Task OnInitNewRow(Dictionary<string, object> values)
+    {
+        values.Add("Frequency", 1);
+        values.Add("DosageUnit", 1);
+        return Task.CompletedTask;
+    }
+}

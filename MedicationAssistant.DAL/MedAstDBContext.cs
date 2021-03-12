@@ -1,5 +1,6 @@
 ﻿using MedicationAssistant.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace MedicationAssistant.DAL
            
             Debug.WriteLine($"{ContextId} context created");
         }
+      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             

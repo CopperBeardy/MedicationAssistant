@@ -1,6 +1,8 @@
-﻿using MedicationAssistant.Common.Enums;
+﻿using AutoMapper;
+using MedicationAssistant.Common.Enums;
 using MedicationAssistant.DAL;
 using MedicationAssistant.DAL.Entities;
+using MedicationAssistant.ServiceLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,8 +10,19 @@ using System.Threading.Tasks;
 
 namespace MedicationAssistant.ServiceLayer.Repositories
 {
-    public static class MedicationService
+    public static class MedicationModelConvertor
     {
+        public static MedicationFullDetail FromMedication(Medication medicaton, IMapper mapper)
+           => mapper.Map<MedicationFullDetail>(medicaton);
+        public static Medication FromMedicationFullDetail(MedicationFullDetail mfd, Dictionary<string, object> values, IMapper mapper) =>
+            SetValues(mapper.Map<Medication>(mfd), values);
+
+        public static List<MedicationFullDetail> ListFromMedication(IEnumerable<Medication> meds, IMapper mapper)
+            => mapper.Map<List<MedicationFullDetail>>(meds);
+       
+
+
+
         public static Medication SetValues(Medication med, Dictionary<string, object> newValues)
         {
             foreach (var item in newValues.Keys)

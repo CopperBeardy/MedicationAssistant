@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup>  
     <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="System.Globalization" Version="4.3.0" />

@@ -1,27 +1,17 @@
-﻿using AutoMapper;
-using MedicationAssistant.Common.Enums;
-using MedicationAssistant.DAL.Entities;
-using System;
-using System.Collections.Generic;
+﻿using MedicationAssistant.Common.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MedicationAssistant.ServiceLayer.DTOs
+namespace MedicationAssistant.ServiceLayer.Models
 {
     public class MedicationFullDetail
     {
-
         public int MedicationId { get; set; }
+      
         [Required]
         [StringLength(100, ErrorMessage = "The Name of the medication needs to be between 5 - 100 characters", MinimumLength = 5)]
         public string Name { get; set; }
-
         
         public  string UserId { get; private set; }
-
 
         [Required]
         public int Quantity { get; set; }
@@ -38,16 +28,12 @@ namespace MedicationAssistant.ServiceLayer.DTOs
         [Required]
         public Frequency Frequency { get; set; }
 
+        [Required]
         public string UseDirections { get; set; }
+              
+        public  byte[] TimeStamp { get; private set; }
 
-        [Timestamp]
-        public byte[] TimeStamp { get; set; }
-
-        public static MedicationFullDetail FromMedication(Medication medicaton, IMapper mapper)
-            => mapper.Map<MedicationFullDetail>(medicaton);
-        
-        public static Medication  FromMedicationFullDetail(MedicationFullDetail mfd, IMapper mapper)
-            => mapper.Map<Medication>(mfd);
+       
         
     }
 }

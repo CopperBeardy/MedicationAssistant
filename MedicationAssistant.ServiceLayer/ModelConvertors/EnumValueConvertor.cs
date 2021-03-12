@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace MedicationAssistant.ServiceLayer.Convertor
+namespace MedicationAssistant.ServiceLayer.ModelConvertors
 {
     public static class EnumValueConvertor
     {
