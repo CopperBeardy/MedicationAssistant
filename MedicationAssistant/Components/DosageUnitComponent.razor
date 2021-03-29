@@ -1,0 +1,23 @@
+﻿@using MedicationAssistant.ServiceLayer.ModelConvertors
+
+<DxDataGridComboBoxColumn Data="@DosageUnits" Field="@nameof(MedicationFullDetail.DosageUnit)" Width="150px">
+    <EditTemplate>
+        @{
+            var editingContext = (CellEditContext)context;
+            var unit = Enum.GetName(typeof(DosageUnit), (editingContext.GetEditorValue(nameof(MedicationFullDetail.DosageUnit))));
+        }
+        <DxComboBox Data="@DosageUnits"
+                    NullText="Select DosageUnit"
+                    Value="@unit"
+                    ValueChanged="((string newCellValue) => {
+									editingContext.OnChanged((Enum.Parse(typeof(DosageUnit),newCellValue)));
+								})">
+        </DxComboBox>
+    </EditTemplate>
+</DxDataGridComboBoxColumn>
+
+@code {
+    [Parameter]
+    public IEnumerable<string> DosageUnits { get; set; } = EnumValueConvertor.DosageUnits;
+
+}

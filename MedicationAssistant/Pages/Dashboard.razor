@@ -1,23 +1,15 @@
 ﻿@page "/Dashboard"
 
+<AuthorizeView>
+	<div class="parent">
+		<h1 class="title">Dashboard</h1>
+		<div class="top-left">box for user details upper left side </div>
 
-@inject IDashboardViewModel vm
-    <AuthorizeView>
-
-        <div class="parent">
-            <h1 class="title">Dashboard</h1>
-            <div class="top-left">box for user details upper left side </div>
-
-            <div class="bottom-left">
-                <PrescriptionsSmallComponent Prescriptions="@vm.Prescriptions" />
-            </div>
-            <div class="bottom-right">
-                <PrescriptionAlertSmallComponent Alerts="@vm.Alerts" />
-            </div>
-        </div>
-    </AuthorizeView>
-    @code {
-        protected override async Task OnInitializedAsync() =>  await vm.GetLists();
-    }
-
-
+		<div class="bottom-left">
+			<PrescriptionsSmallComponent/>
+		</div>
+		<div class="bottom-right">
+			<AlertSmallComponent/>
+		</div>
+	</div>
+</AuthorizeView>

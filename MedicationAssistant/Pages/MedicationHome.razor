@@ -25,38 +25,10 @@ else
         <DxDataGridCommandColumn Width="150px" DeleteButtonVisible="false" />
         <DxDataGridColumn AllowFilter="true" Field="@nameof(MedicationFullDetail.Name)" />
         <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Dosage)" Width="100px" />
-        <DxDataGridComboBoxColumn Data="@vm.DosageUnit" Field="@nameof(MedicationFullDetail.DosageUnit)" Width="150px">
-            <EditTemplate>
-                @{
-                    var editingContext = (CellEditContext)context;
-                    var unit = Enum.GetName(typeof(DosageUnit), (editingContext.GetEditorValue(nameof(MedicationFullDetail.DosageUnit))));
-                }
-                <DxComboBox Data="@vm.DosageUnit"
-                            NullText="Select DosageUnit"
-                            Value="@unit"
-                            ValueChanged="((string newCellValue) => {
-                                    editingContext.OnChanged((Enum.Parse(typeof(DosageUnit),newCellValue)));
-                                })">
-                </DxComboBox>
-            </EditTemplate>
-        </DxDataGridComboBoxColumn>
+        <DosageUnitComponent />
         <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.Quantity)" Width="100px" />
         <DxDataGridSpinEditColumn Field="@nameof(MedicationFullDetail.FrequencyUnit)" Width="100px" />
-        <DxDataGridComboBoxColumn Data="@vm.Frequency" Field="@nameof(MedicationFullDetail.Frequency)" Width="150px">
-            <EditTemplate>
-                @{
-                    var editingContext = (CellEditContext)context;
-                    var unit = Enum.GetName(typeof(Frequency), (editingContext.GetEditorValue(nameof(MedicationFullDetail.Frequency))));
-                }
-                <DxComboBox Data="@vm.Frequency"
-                            NullText="Select Frequency"
-                            Value="@unit"
-                            ValueChanged="((string newCellValue) => {
-                                    editingContext.OnChanged((Enum.Parse(typeof(Frequency),newCellValue)));
-                                })">
-                </DxComboBox>
-            </EditTemplate>
-        </DxDataGridComboBoxColumn>
+        <FrequencyComponent/>
         <DxDataGridColumn Field="@nameof(MedicationFullDetail.UseDirections)">
 
         </DxDataGridColumn>

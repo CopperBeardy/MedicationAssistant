@@ -1,22 +1,40 @@
-﻿<h3>Latest Prescriptions</h3>
+﻿@using MedicationAssistant.ServiceLayer.Repositories.Interfaces
+@using MedicationAssistant.ServiceLayer.Repositories
+@using System.Security.Claims;
+
+@inject ClaimsPrincipal User
+@inject IMapper mapper
+@inject IDbContextFactory<MedAstDBContext>  DbFactory
+@inject IPrescriptionRepository PrescriptionRepo
+
+<h3>Latest Prescriptions</h3>
 
 <div>
-    @if (Prescriptions != null)
-    {
-   <ol>
-       @foreach (var prescription in Prescriptions)
-       {
-           <li>
-               <span>Collected on : @prescription.CollectedOn.ToShortDateString() with @prescription.NumberOfMedications items</span>
-           </li>
-       }
-   </ol>
-    }
-    <NavLink href="/Prescriptions" class="btn btn-success" >View All</NavLink>
+	@if (Prescriptions != null)
+	{
+		<ol>
+			@foreach (var prescription in Prescriptions)
+			{
+				<li>
+					<span>Collected on : @prescription.CollectedOn.ToShortDateString() with @prescription.NumberOfMedications items</span>
+				</li>
+			}
+		</ol>
+	}
+	<NavLink href="/Prescriptions" class="btn btn-success">View All</NavLink>
 </div>
 
 
 @code {
-    [Parameter]
-    public IEnumerable<PrescriptionDateCount> Prescriptions { get; set;}
+   
+	public IEnumerable<PrescriptionDateCount> Prescriptions { get; set; }
+
+	protected override async Task OnInitializedAsync() 
+	{ 
+		PrescriptionRepo = new PrescriptionRepository(DbFactory.CreateDbContext());
+
+		Prescriptions = PrescriptionModelConvertor.FromPrescriptions((await PrescriptionRepo
+				 .GetRequiredPrescriptionsAsync(
+			User.FindFirst(ClaimTypes.NameIdentifier).Value, 5)), mapper);
+	}
 }

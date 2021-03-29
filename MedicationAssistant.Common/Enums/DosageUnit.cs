@@ -1,11 +1,11 @@
 ﻿namespace MedicationAssistant.Common.Enums
 {
-    public enum DosageUnit
-    {
-        mg,
-        ml,
-        g,
-    }
+	public enum DosageUnit
+	{
+		mg,
+		ml,
+		g,
+	}
 
 
 }

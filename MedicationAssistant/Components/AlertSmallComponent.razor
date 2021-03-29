@@ -1,0 +1,40 @@
+﻿@using MedicationAssistant.ServiceLayer.Repositories.Interfaces
+@using MedicationAssistant.ServiceLayer.Repositories
+@using System.Security.Claims;
+
+@inject ClaimsPrincipal User
+@inject IMapper mapper
+@inject IDbContextFactory<MedAstDBContext>  DbFactory
+@inject IAlertRepository AlertRepo
+
+<h3>Next occurring alerts</h3>
+
+<div>
+	@if (Alerts != null)
+	{
+		<ol>
+			@foreach (var alert in Alerts)
+			{
+				<li>
+					Alert time : @alert.Time there are @alert.NumberOfMedications items on this alert
+				</li>
+			}
+		</ol>
+	}
+	<NavLink href="/Alerts" class="btn btn-success">View All</NavLink>
+</div>
+
+@code
+{
+	public IEnumerable<AlertTimeCount> Alerts { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+	  
+		AlertRepo = new AlertRepository(DbFactory.CreateDbContext());
+		Alerts = AlertModelConvertor.FromAlerts((await AlertRepo
+				.GetRequiredAmountOfAlertsForIdAsync(
+			User.FindFirst(ClaimTypes.NameIdentifier).Value, 5)), mapper);
+
+	}
+}

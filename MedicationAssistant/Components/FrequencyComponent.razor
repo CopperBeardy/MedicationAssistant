@@ -1,0 +1,22 @@
+﻿ @using MedicationAssistant.ServiceLayer.ModelConvertors
+
+<DxDataGridComboBoxColumn Data="@Frequencies" Field="@nameof(MedicationFullDetail.Frequency)" Width="150px">
+			<EditTemplate>
+				@{
+					var editingContext = (CellEditContext)context;
+					var unit = Enum.GetName(typeof(Frequency), (editingContext.GetEditorValue(nameof(MedicationFullDetail.Frequency))));
+				}
+				<DxComboBox Data="@Frequencies"
+							NullText="Select Frequency"
+							Value="@unit"
+							ValueChanged="((string newCellValue) => {
+									editingContext.OnChanged((Enum.Parse(typeof(Frequency),newCellValue)));
+								})">
+				</DxComboBox>
+			</EditTemplate>
+		</DxDataGridComboBoxColumn>
+
+@code {
+	[Parameter]
+	public IEnumerable<string> Frequencies { get; set; } = EnumValueConvertor.FrequencyUnits;
+}
